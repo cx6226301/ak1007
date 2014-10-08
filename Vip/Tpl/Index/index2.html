@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <meta http-equiv="x-ua-compatible" content="ie=7">
+                <meta http-equiv="x-ua-compatible" content="ie=8">
+                    <title>{$System_namex}</title>
+                    <link href="__PUBLIC__/other/Css/main.css" rel="stylesheet" type="text/css">
+                        <script language="JavaScript" src="__PUBLIC__/other/Js/jquery-1.js" type="text/javascript"></script>
+                        <script language="JavaScript" type="text/javascript" src="__PUBLIC__/other/Js/imgcut.js"></script>
+                        <script type="text/javascript">
+                            function autoHeight() {
+                                var iframe = document.getElementById("Iframe");
+                                if (iframe.Document) {//ie自有属性
+                                    iframe.style.height = iframe.Document.documentElement.scrollHeight;
+                                } else if (iframe.contentDocument) {//ie,firefox,chrome,opera,safari
+                                    iframe.height = iframe.contentDocument.body.offsetHeight;
+                                }
+                            }
+                            function show() {
+                                var date = new Date(); //日期对象
+                                var now = "";
+                                now = date.getFullYear() + "-"; //读英文就行了
+                                now = now + (date.getMonth() + 1) + "-"; //取月的时候取的是当前月-1如果想取当前月+1就可以了
+                                now = now + date.getDate() + " ";
+                                now = now + date.getHours() + ":";
+                                now = now + date.getMinutes() + ":";
+                                now = now + date.getSeconds();
+                                document.getElementById("nowDiv").innerHTML = now; //div的html是now这个字符串 
+                                setTimeout("show()", 1000); //设置过1000毫秒就是1秒，调用show方法
+                            }
+                        </script>
+                        <script type="text/javascript">
+                            var timeout = 500;
+                            var closetimer = 0;
+                            var ddmenuitem = 0;
+                            function jsddm_open() {
+                                jsddm_canceltimer();
+                                jsddm_close();
+                                ddmenuitem = $(this).find('ul').eq(0).css('visibility', 'visible');
+                            }
+                            function jsddm_close() {
+                                if (ddmenuitem)
+                                    ddmenuitem.css('visibility', 'hidden');
+                            }
+                            function jsddm_timer() {
+                                closetimer = window.setTimeout(jsddm_close, timeout);
+                            }
+                            function jsddm_canceltimer() {
+                                if (closetimer) {
+                                    window.clearTimeout(closetimer);
+                                    closetimer = null;
+                                }
+                            }
+                            $(document).ready(function()
+                            {
+                                $('#jsddm > li').bind('mouseover', jsddm_open);
+                                $('#jsddm > li').bind('mouseout', jsddm_timer);
+                            });
+
+                            document.onclick = jsddm_close;
+                        </script>
+                        </head>
+                        <body onload="show()">
+                            <div class="imgcut">
+                                <div style="width:980px;">
+                                    <!--<script type="text/javascript"> 
+                                                //<![CDATA[
+                                                var interval_time=3;
+                                                var focus_width=980;
+                                                var focus_height=260;
+                                                var text_height=0;
+                                                var text_align="center";
+                                                var swf_height=focus_height+text_height;
+                                                var pics="__PUBLIC__/other/Images/01.jpg|__PUBLIC__/other/Images/02.jpg|__PUBLIC__/other/Images/03.jpg|__PUBLIC__/other/Images/04.jpg|__PUBLIC__/other/Images/05.jpg";
+                                                var links="#|#|#|#|#";
+                                                var texts="1|2|3|4|5";
+                                                document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+                                                document.write('<param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="../flash/bbsou_com.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#F0F0F0">');
+                                                document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+                                                document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'">');
+                                                document.write('<embed src="../flash/bbsou_com.swf" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'" menu="false" bgcolor="#F0F0F0" quality="high" width="'+ focus_width +'" height="'+ swf_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+                                                document.write('</object>');
+                                                //]]>
+                                                </script>-->
+                                    <script type="text/javascript">
+                                        var swf_width = 980;
+                                        var swf_height = 260;
+                                        var configtg='0xffffff|0|0x2894FF|5|0xffffff|0xC5DDBC|0x000033|2|3|1|_blank';
+                                        var files = "__PUBLIC__/other/Images/01.jpg|__PUBLIC__/other/Images/02.jpg|__PUBLIC__/other/Images/03.jpg|__PUBLIC__/other/Images/04.jpg|__PUBLIC__/other/Images/05.jpg";
+                                        var links = '||';
+                                        var texts = '飞天不老养生酒|飞天不老养生酒|飞天不老养生酒|飞天不老养生酒|飞天不老养生酒';
+                                        document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="' + swf_width + '" height="' + swf_height + '">');
+                                        document.write('<param name="movie" value="__PUBLIC__/other/Images/bcastr3.swf"><param name="quality" value="high">');
+                                        document.write('<param name="menu" value="false"><param name=wmode value="opaque"><param name=wmode value="transparen">');
+                                        document.write('<param name="FlashVars" value="bcastr_file=' + files + '&bcastr_link=' + links + '&bcastr_title=' + texts + '&bcastr_config=' +configtg+ '">');
+                                        document.write('<embed src="__PUBLIC__/other/Images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file=' + files + '&bcastr_config='+configtg+'&bcastr_link=' + links + '&bcastr_title=' + texts + '& menu="true" quality="high" width="' + swf_width + '" height="' + swf_height + '" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+                                        document.write('</object>');
+                                    </script>
+
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <!------导航栏开始-->
+                            <div id="nav">
+                                <ul id="jsddm">
+                                    <li class="index"><a href="__APP__" class="t_1" style="padding-bottom:0px;"><span>首页</span></a></li>
+                                    <li class="index2"><a href="__APP__/Public/cody/c_id/3" class="t_1" target="main"><span>我的帐户</span></a>
+                                        <ul>
+                                            <li><a href="__APP__/Public/cody/c_id/1" target="main">修改资料</a></li>
+                                            <li><a href="__APP__/Public/cody/c_id/2" target="main">修改密码</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                    <li class="index2"><a href="__APP__/News/index/" class="t_1" target="main"><span>新闻资讯</span></a>
+                                        <ul>
+                                            <li><a href="__APP__/News/index/" target="main">新闻中心</a></li>
+                                    <li><a href="__APP__/Public/plan" target="main">市场计划</a></li>
+                                    <!--<li><a href="__APP__/Down/Down/" target="main">下载中心</a></li>-->
+                                    <li><a href="__APP__/Fck/inMessages/" target="main">收件箱</a></li>
+                                    <li><a href="__APP__/Fck/outMessages/" target="main">发件箱</a></li>
+                                    <li><a href="__APP__/Fck/messages/" target="main">写邮件</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                    <li class="index2"><a href="__APP__/Public/cody/c_id/3" class="t_1" target="main"><span>财务管理</span></a>
+                                        <ul>
+                                            <li><a href="__APP__/Public/cody/c_id/3" target="main">账户查询</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/9" target="main">奖金明细</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/6" target="main">账户转账</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/7" target="main">货币提现</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/10" target="main">充值申请</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/18" target="main">晋级申请</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                    <li class="index2"><a href="__APP__/Tree/cody/c_id/5" class="t_1" target="main"><span>我的团队</span></a>
+                                        <ul>
+                                            <li><a href="__APP__/Fck/users" target="main">注册会员</a></li>
+                                    <li><a href="__APP__/Tree/cody/c_id/5" target="main">系统架构图</a></li>
+                                    <li><a href="__APP__/Tree/cody/c_id/7" target="main">大公排图</a></li>
+                                    <li><a href="__APP__/Tree/cody/c_id/6" target="main">推荐关系图</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/3" target="main">查看推荐关系</a></li>
+                                    <!--<li><a href="__APP__/Tree/cody/c_id/8" target="main">公排网络图</a></li>-->
+                                    <!--<li><a href="__APP__/Fck/cody/c_id/4" target="main">申请报单中心</a></li>-->
+                                    <li><a href="__APP__/Fck/cody/c_id/1" target="main">未开通会员</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                        </li>
+                                        <li class="index2" style="display: none"><a href="__APP__/Gupiao/cody/c_id/4" class="t_1" target="main"><span>交易市场</span></a>
+                                        <ul>
+                                            <li><a href="__APP__/Gupiao/cody/c_id/9" target="main">股票走势图</a></li>
+                                            <li><a href="__APP__/Gupiao/cody/c_id/1" target="main">电子股买入</a></li>
+                                    <li><a href="__APP__/Gupiao/cody/c_id/3" target="main">电子股卖出</a></li>
+                                    <li><a href="__APP__/Gupiao/cody/c_id/4" target="main">电子股行情</a></li>
+                                    <egt name="fck_rs['is_boss']" value='1'>
+                                        <li><a href="__APP__/Gupiao/cody/c_id/3" target="main">公司卖出电子股</a></li>
+                                        <li><a href="__APP__/Gupiao/cody/c_id/5" target="main">电子股参数设置</a></li>
+                                        <li><a href="__APP__/Gupiao/cody/c_id/7" target="main">购买列表</a></li>
+                                        <li><a href="__APP__/Gupiao/cody/c_id/8" target="main">出售列表</a></li>
+                                    </egt>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                     <li class="index2"><a href="__APP__/Fck/cody/c_id/4" class="t_1" target="main"><span>报单中心</span></a>
+                                        <ul>
+                                     <li><a href="__APP__/Fck/cody/c_id/4" target="main">中心申请</a></li>
+                                        <li><a href="__APP__/Fck/cody/c_id/1" target="main">开通会员</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                    <li class="index2" <eq name="fck_rs['is_boss']" value='0'>style="display:none"</eq>><a href="javascript:;" class="t_1" target="main"><span>后台管理</span></a>
+                                        <ul>
+                                     <li><a href="__APP__/YouZi/cody/c_id/31" target="main">拟回购原始股</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/32" target="main">模拟月结算</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/5" target="main">当期出纳</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/8" target="main">奖金查询</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/1" target="main">会员审核</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/2" target="main">会员管理</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/10" target="main">报单中心管理</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/18" target="main">货币流向</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/6" target="main">提现管理</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/12" target="main">充值管理</a></li>
+                                        <li><a href="__APP__/News/index/" target="main">新闻公告管理</a></li>
+                                        <li><a href="__APP__/News/plan/" target="main">奖励计划设置</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/7" target="main">数据库备份</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/3" target="main">参数设置</a></li>
+                                        <li><a href="__APP__/YouZi/cody/c_id/9" target="main">清空数据</a></li>
+                                            <li class="bottom"></li>
+                                        </ul>
+                                    </li>
+                                    <li style="margin:-3px 0 0 100px;"><a href="__APP__/Public/LogOut/"><img src="__PUBLIC__/other/Images/menu_btn.gif" border="0"></a></li>
+                                </ul>
+                            </div>
+                            <!------导航栏结束-->
+                            <div class="clear" style="*margin-bottom:6px;"></div>
+                            <div id="gundong" style="display:none">
+                                <div id="gddiv">
+                                    <marquee direction="left">
+                                        123
+                                    </marquee>
+                                </div>
+                                <div id="tdiv">现在时间：<span id="nowDiv">2014-5-12 11:33:41</span></div>
+                            </div>
+                            <!------中间内容开始-->
+                            <div id="content">
+                                <!--------左边开始-->
+                                
+                                <!--------左边结束-->
+                                <!--------框架开始-->
+                                <div id="vFormMain">
+                                    <iframe src="__APP__/Public/main2" id="Iframe" name="main" style="border:0px;width:980px;" onload="turnHeight(this.id);" frameborder="0" scrolling="auto"></iframe>
+                                </div>
+                                <!--------框架结束-->
+                                <div class="clear"></div>
+                            </div>
+                            <!------中间内容结束-->
+                            <div class="clear"></div>
+                            <!--------底部开始-->
+                            <div id="footer">Copyright 2013-2014 SAMpod-All Rights Reserved</div>
+                            <!--------底部结束-->
+                            <script language="javascript" src="__PUBLIC__/other/Images/getonline.htm" charset="utf-8" type="text/javascript"></script>
+                            <script language="javascript" src="__PUBLIC__/other/Images/url.js" charset="utf-8" type="text/javascript"></script>
+                            <script language="javascript" src="__PUBLIC__/other/Js/478872_code.js" charset="utf-8" type="text/javascript"></script>
+                            <link type="text/css" rel="stylesheet" href="__PUBLIC__/other/Css/skin.css">
+
+                                <div style="clear: both;"></div>
+                        </body>
+                        </html>
+<script>
+    function turnHeight(iframe)
+    {
+
+        var frm = document.getElementById(iframe);
+        frm.height = 500;
+        var subWeb = document.frames ? document.frames[iframe].document : frm.contentDocument;
+        if (frm != null && subWeb != null)
+        {
+            if (subWeb.body.scrollHeight < 500) {
+                frm.height = 500;
+            } else {
+                frm.height = subWeb.body.scrollHeight + 20;
+            }
+        }
+    }
+</script>

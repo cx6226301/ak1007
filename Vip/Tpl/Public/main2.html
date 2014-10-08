@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>首页</title>
+        <link href="__PUBLIC__/other/Css/main.css" rel="stylesheet" type="text/css">
+        <link href="__PUBLIC__/other/Css/style.css" rel="stylesheet" type="text/css">
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/other/Css/skin.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="userInfo">
+                                    <div class="userInfoTil">当前用户信息</div>
+                                    <div class="userInfoContent">
+                                        <div class="userInfo_1"> <img src="__PUBLIC__/other/Images/userInfo_3.gif" class="userInfo_1Img">
+                                                <p><span>你好：<em>{$fck_rs['user_id']}</em></span></p>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="userInfo_2">
+                                            <ul>
+                                                <li class="userBg_1"><span>会员级别：</span>{$dengji}</li>
+                                                <li class="userBg_1"><span>会员职务：</span>{$zhiwu}</li>
+                                                <li class="userBg_2"><span>奖金余额：</span><strong class="red">{$fck_rs.agent_use}</strong></li>
+                                                <li class="userBg_3"><span>电子余额：</span><strong class="red">{$fck_rs.agent_cash}</strong></li>
+                                                <li class="userBg_4"><span>现金余额：</span><strong class="red">{$fck_rs.agent_xianjin}</strong></li>
+                                                <li class="userBg_3" style="display:none"><span>电子股：</span><strong class="red">{$fck_rs.live_gupiao}</strong></li>
+                                                <li class="userBg_3"><span>原始股：</span><strong class="red">{$fck_rs.yuan_gupiao}</strong></li>
+                                            </ul>
+                                            <div class="clear"></div>
+                                            <p><a href="__APP__/Public/cody/c_id/3" target="main"><img src="__PUBLIC__/other/Images/userInfo_btn_2.gif" border="0"></a></p>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+        <div style="margin-left:10px; float: left;width: 660px;">
+            <table width="998" align="center" border="0" cellspacing="0" cellpadding="0" class="ncenter_box">
+  <tr>
+      <td height="26" class="accounttitle"><h1>新闻中心</h1></td>
+  </tr>
+<tr>
+<td><br/>
+    <style>
+        
+        .news_box li{
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .news_box li a{
+            color:blue;
+        }
+    </style>
+     <div class="news_box">
+         <ul>
+             <volist name="list" id="vo">
+                 <li><a href="__APP__/Public/News_show/NewID/{$vo.id}">{$vo['title']|mysubstr=###,20}</a></li>
+             </volist>
+         </ul>
+     </div>
+        
+        
+       
+     
+</td>
+  </tr>
+</table>
+            
+        </div>
+    </body>
+    
+</html>

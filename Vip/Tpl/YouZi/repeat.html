@@ -1,0 +1,52 @@
+<include file="../Public/header" />
+<div class="ncenter_box">
+<div class="accounttitle"><h1>一键结算 </h1></div>&nbsp;
+<div class="c_p5"><div class="tips">一键回购会员的原始股</div></div>
+<table width="100%" cellpadding=0 cellspacing=0 border=0 id="tb1" class="tab4">
+<form method='post' id="form1" action="__URL__/jiesuanAC">
+<tr align="center">
+  <td><br><span style="color:#FF3300;"> </span><br><br></td>
+</tr>
+<tr>
+            <td colspan="3" style="height:5px;"><hr></td>
+          </tr>
+          <tr align="center">
+              <td>
+                  <table width="100%" cellpadding=0 cellspacing=0 border=0 id="tb1" style="width:400px; margin: 0 auto">
+<!--                      <tr><td align="right">参与分红人数:</td><td style="red">&nbsp;&nbsp;{$count}</td></tr>
+                      <tr><td align="right">原始股总数:</td><td style="red">&nbsp;&nbsp;{$sum}</td></tr>
+                      <tr><td align="right">新增业绩:</td><td style="red">&nbsp;&nbsp;{$sum}</td></tr>
+                      <tr><td align="right">原始股总数:</td><td style="red">&nbsp;&nbsp;{$sum}</td></tr>-->
+                     
+                  </table>
+              </td>
+              
+          </tr>  
+          <tr align="center">
+              <td>
+                  <table width="100%" cellpadding=0 cellspacing=0 border=0 id="tb1" style="width:400px; margin: 0 auto" class="tab3">
+                      <tr><td align="right">参与分红人数:</td><td style="color:red">&nbsp;&nbsp;{$count}</td></tr>
+                      <tr><td align="right">原始股总数:</td><td style="color:red">&nbsp;&nbsp;{$sum}</td></tr>
+                      <tr><td align="right">新增业绩:</td><td style="color:blue">&nbsp;&nbsp;{$zyj}</td></tr>
+                      <tr><td align="right">回购业绩（{$s4}%）:</td><td style="color:red">&nbsp;&nbsp;{$zyj*$s4/100}</td></tr>
+                      <!--<tr><td align="right">原始股总数:</td><td style="red">&nbsp;&nbsp;{$sum}</td></tr>-->
+                      <tr><td align="right" colspan="3"></td></tr>
+                      <tr><td align="right">等级</td><td style="red">&nbsp;&nbsp;对应扣除原始股</td></tr>
+                      <volist name="s10" id="vo">
+                          <tr><td align="right" style="color:{$color[$key+1]}">{$s10[$key]}:</td><td><input name="x{$key+1}" value="0" id="input"></td></tr>
+                      </volist>
+                  </table>
+              </td>
+              
+          </tr>    
+<tr align="center">
+    
+	<td>
+	  <input type="submit" value="一键结算" onclick="{if(confirm('确定一键结算吗?')){return true;}return false;}" class="button_text">	
+	</td>
+</tr>
+</form>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<include file="../Public/header" />
+<script language=javascript src="__PUBLIC__/Js/wpCalendar.js"></script>
+<div class="ncenter_box">
+<div class="accounttitle"><h1>交易列表 </h1></div>&nbsp;
+<!-- 列表显示区域  -->
+
+<h2>出售金币</h2>
+<table width="100%" cellpadding=3 border=0 cellspacing="1" id="tb1" bgcolor="#b9c8d0" class="tab3">
+<thead>
+    <tr class="content_td" align="center" style="color:#1d7901;">
+        <th nowrap ><span>交易编号</span></th>
+        <th nowrap ><span>会员编号</span></th>
+        <th nowrap ><span>出售金币</span></th>
+        <th nowrap ><span>出售总价</span></th>
+        <th nowrap ><span>剩余金币</span></th>
+        <th nowrap ><span>出售时间</span></th>
+        <th nowrap ><span>交易状态</span></th>
+        <th nowrap ><span>操作</span></th>
+
+    </tr>
+</thead>
+<volist name="list" id="vo">
+<tr class="content_td" align="center">
+	<td>{$vo['id']}</td>
+	<td>{$vo['user_id']}</td>
+	<td><b><font color='green'>{$vo['nums']}</font></b></td>
+	<td><b><font color='red'>{$vo['price']}</font></b></td>
+        <td><b><font color='blue'>{$vo['end_nums']}</font></b></td>
+	<td>{$vo['time']|date="Y-m-d H:i:s",###}</td>
+	<td>{$vo['status']|status=###}</td>
+        <td><if condition='($vo.status eq 0) and ($vo.user_id eq $user_id)'><input type="button" class="button_text" value='取消' onclick='if(confirm("真的取消交易号 {$vo.id}?")) location.href="__URL__/xiajia/id/{$vo.id}";else return false;'/><elseif condition='$vo.status eq 0'/><input type="button" class="button_text" onclick="open_black({$vo['id']},{$vo['end_nums']},{$vo['danjia']})" value="购买"/><else />已结束</if></td>
+</tr>
+</volist>
+</table>
+<table width="100%" class="tab3_bottom" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+        <td>{$page}</td>
+    </tr>
+</table>
+<div style='height:50px;'></div>
+<h2>买入金币</h2>
+
+<table width="100%" cellpadding=3 border=0 cellspacing="1" id="tb2" bgcolor="#b9c8d0" class="tab3">
+<thead>
+    <tr class="content_td" align="center" style="color:#1d7901;">
+        <th nowrap ><span>交易编号</span></th>
+        <th nowrap ><span>会员编号</span></th>
+        <th nowrap ><span>买入金币</span></th>
+        <th nowrap ><span>买入价格</span></th>
+        <th nowrap ><span>买入时间</span></th>
+        <th nowrap ><span>交易状态</span></th>
+        <!--<th nowrap ><span>操作</span></th>-->
+
+    </tr>
+</thead>
+<volist name="list1" id="vo">
+<tr class="content_td" align="center">
+	<td>{$vo['id']}</td>
+	<td>{$vo['user_id']}</td>
+	<td><font color='blue'>{$vo['nums']}</font></td>
+	<td><font color='red'>{$vo['price']}</font></td>
+	<td>{$vo['time']|date="Y-m-d H:i:s",###}</td>
+	<td>{$vo['status']|statuss=###}</td>
+
+</tr>
+</volist>
+</table>
+<table width="100%" class="tab3_bottom" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+        <td>{$page1}</td>
+    </tr>
+</table>
+</div>
+
+<div id="black">
+    
+    
+</div>
+<div id="white">
+    <form method='post' id="myform" action="__URL__/mairuAC" >
+        <table width="100%" cellpadding=3 border=0 cellspacing="1" id="tb2" bgcolor="#b9c8d0" class="tab3">
+            <tr>
+                <td align='right'>交易编号：</td><td align='left' style='padding-left:10px; height: 40px;'><input style='background-color:#ddd;' readonly type="text" id='id' name='id'/></td></tr><tr>
+                <td align='right' style='color:red'>剩余金币：</td><td align='left' style='padding-left:10px; height: 40px;'><font color='blue' id='end_nums' name='end_nums'></font></td></tr>
+                <td align='right' style='color:red'>购买金币：</td><td align='left' style='padding-left:10px; height: 40px;'><input type="text" name='nums' id="nums" onclick='check_null(this)' onkeyup="onkey();" value="0" onblur='check_end(this.value)'/></td></tr>
+             <tr>   <td align='right' style='color:blue'>购买价格：</td><td align='left' style='padding-left:10px;height: 40px;'><input type="text" name='price' id="price" style='background-color:#ddd;' value="0" readonly/></td></tr>
+             <tr>   <td align='right'>&nbsp;</td><td align='left' style='padding-left:10px;height: 40px;'><input type="hidden" name="danjia" id="danjia" value=""><input type="submit" name='submit' value='抢购' onclick="if(confirm('确定购买?')) return true;else return false;" class='button_text'/>&nbsp;&nbsp;&nbsp;<input type="reset" name='reset' onclick='close1();' value='取消' class='button_text'/></td>
+            </tr>
+        </table>
+    </form>
+    </div>
+</body>
+</html>
+<script>
+    function check_end(e){
+        var s=document.getElementById('end_nums').innerHTML;
+        var ss=parseFloat(s);
+        if(e>ss){
+            alert("购买数量错误!");
+            document.getElementById('nums').value='0';
+            document.getElementById('price').value='0';
+        }
+    }
+    function onkey(){
+        var d=document.getElementById('danjia').value;
+        var nums=document.getElementById('nums').value;
+        document.getElementById('price').value=nums*d;
+    }
+    function check_null(e){
+        if(e.value==0){
+            e.value='';
+        }
+    }
+    function open_black(e,v,d){
+        document.getElementById('black').style.display='block';
+        document.getElementById('white').style.display='block';
+        document.getElementById('id').value=e;
+        document.getElementById('end_nums').innerHTML=v;
+        document.getElementById('danjia').value=d;
+    }
+    function close1(){
+        document.getElementById('black').style.display='none';
+        document.getElementById('white').style.display='none';
+    }
+</script>
+<style>
+    h2{text-align: center; font-family:'黑体'}
+    #black{ background-color: black; position:fixed; left:0;top:0;opacity:0.5; width:100%; height:100%; display: none}
+    #white{ padding:5px; padding-top: 20px;border-radius:5px;box-shadow: 10px 10px 14px #737373;background-color: white; position:fixed; left:0;top:0;width: 300px;height:50%; margin-top:30px; margin-left: 300px;opacity:1; display: none}
+</style>
+<script>new TableSorter("tb1");new TableSorter("tb2");</script>

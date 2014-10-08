@@ -1,0 +1,71 @@
+<include file="../Public/header" />
+<div class="ncenter_box">
+<div class="accounttitle"><h1>会员管理 </h1></div>
+&nbsp;
+<form name="form3" method="post" action="__URL__/adminMenberAC">
+<table width="100%" class="tab3" border="0" cellpadding="3" cellspacing="1" id="tb1" bgcolor="#b9c8d0">
+	<thead>
+    <tr align="center">
+        <th></th>
+        <th><span>会员编号</span></th>
+        <th><span>姓名</span></th>
+        <!--<th><span>身份</span></th>-->
+        <th><span>联系电话</span></th>
+        <th><span>报单中心</span></th>
+        <th><span>开通时间</span></th>
+        <th><span>总奖金</span></th>
+        <th><span>报单币</span></th>
+        <th><span>金币账户</span></th>
+        <th><span>金种子账户</span></th>
+        <!--<th><span>业务员</span></th>-->
+        <th><span>查看奖金</span></th>
+        <th><span>状态</span></th>
+        <th><span>是否奖金</span></th>
+    </tr>
+    </thead>
+    <volist name="list" id="vo">
+    <tr class="content_td lz" align="center">
+        <td><input type="checkbox" name="tabledb[]" value="{$vo['id']}" class="btn2" /></td>
+        <td><a href="__URL__/adminuserData/PT_id/{$vo['id']}">{$vo['user_id']}</a></td>
+        <td>{$vo['user_name']}</td>
+        <!--<td><span class="ywy1">{$vo['ywy']|pd_ywy=###}</span><span class="ywy2">{$vo['id']|pd_ywy1=###}</span></td>-->
+        <td>{$vo['user_tel']}</td>
+        <td><eq name="vo['is_agent']" value='2'><span style="color:BLUE;">是</span><else/>否</eq></td>
+        <td>{$vo.pdt|date='Y-m-d H:i:s',###}</td>
+        <td>{$vo['zjj']}</td>
+        <td>{$vo['agent_cash']}</td>
+        <td>{$vo['agent_use']}</td>
+        <td>{$vo['agent_zz']}</td>
+        <!--<td>{$vo['agent_qb']}</td>-->
+        <td><a href="__APP__/Fck/financeTable/cid/{$vo['id']}">查看</a></td>
+        <td><eq name="vo['is_lock']" value='0'><span style="color: #FF0000;">未锁定</span><else />已锁定</eq><eq name="vo['is_pay']" value='2'>[空单]</eq></td>
+        <td><eq name="vo['is_fenh']" value='0'><span style="color: #FF0000;">开启奖金</span><else />关闭奖金</eq></td>
+    </tr>
+    </volist>
+</table>
+    
+<table width="100%" class="tab3_bottom" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+        <td>{$page}</td>
+    </tr>
+</table>
+</form>
+</div>
+</body>
+</html>
+<script>
+        var ywy1=document.getElementById('ywy1');
+        var ywy2=document.getElementById('ywy2');
+        alert(ywy1.value);
+        if(ywy1.value=='业务员')
+            ywy2.style.display='none';
+        else {
+            ywy1.style.display='none';
+            ywy2.style.display='block';
+        }
+        
+        function url(id){
+            window.location.href="__URL__/shengji_ywy/id/"+id;
+        }
+        </script>
+<script>new TableSorter("tb1");</script>

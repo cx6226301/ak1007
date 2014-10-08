@@ -1,0 +1,44 @@
+<include file="../Public/header" />
+<style>
+.tab_l3{font-size:14px;}
+</style>
+<div class="ncenter_box">
+<div class="accounttitle"><h1>购买列表</h1></div>
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#b9c8d0" class="tab3" id="tb1">
+<tr>
+  <th width="12%"><span>会员编号</span></th>
+  <th width="18%" height="28"><span>求购时间</span></th>
+  <th width="12%"><span>求购总额</span></th>
+  <th width="12%"><span>剩余总额</span></th>
+  <th width="12%"><span>已成交量</span></th>
+  <th width="12%"><span>成交总额</span></th>
+  <th width="10%"><span>状态</span></th>
+  <th width="12%"><span>返还</span></th>
+</tr>
+<volist name="list" id="vo">
+<tr>
+  <td align="center">{$vo.uid|user_id}</td>
+  <td height="25" align="center">{$vo.eDate|date='Y-m-d H:i:s',###}</td>
+  <td align="center">{$vo.price}</td>
+  <td align="center">{$vo.buy_s}</td>
+  <td align="center">{$vo['all_nums']-$vo['only_nums']}</td>
+  <td align="center">{$vo['all_nums']*$vo['one_price']-$vo['only_nums']*$vo['one_price']}</td>
+  <td align="center">
+  <eq name="vo.is_cancel" value="1"><font color="#0000FF">已撤销</font></eq>
+  <eq name="vo.is_cancel" value="0">
+  <eq name="vo.ispay" value="0"><font color="#FF0000">未完成</font><else />已成交</eq>
+  </eq>
+  </td>
+  <td align="center">
+  <eq name="vo.ispay" value="1">返还 {$vo['only_nums']*$vo['one_price']}</eq></td>
+</tr>
+</volist>
+</table>
+<table width="100%" class="tab3_bottom" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+        <td>{$page}</td>
+    </tr>
+</table>
+</div>
+</body>
+</html>
