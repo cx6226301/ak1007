@@ -207,13 +207,14 @@ function Email(sMsgId)
 	if(oEmail){
 		var oMsg = document.getElementById(sMsgId+"1");
 		if(oEmail.value){
-			var oReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/; 
+			var oReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
 			var bRes = oReg.test(oEmail.value);
 			if(bRes){
 				if(oMsg){oMsg.innerHTML = "<div class='msg_ok'></div>";}
 				return true;
 			}
 			if(oMsg){oMsg.innerHTML = "<div class='msg_error'>邮件格式不正确!</div>";}
+                        oEmail.focus();
 			return false;
 		}
 	}

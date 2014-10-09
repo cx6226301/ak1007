@@ -28,7 +28,7 @@
       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab1">
       <tr>
         <td>
-        <form method='post' id="form1" name="form1" action="__URL__/usersAdd"/>
+            <form method='post' id="form1" name="form1" action="__URL__/usersAdd" onsubmit="return Email('UserEmail');"/>
         <table width="100%" border="0" cellpadding="3" cellspacing="0" class="tab4">
           <tr>
             <td width="20%" align="right"><span class="zc_hong">*</span> 所属报单中心：</td>
@@ -184,7 +184,7 @@
           </tr>
           <tr>
             <td align="right"><span class="zc_hong">*</span>E-Mail：</td>
-            <td><input name="UserEmail" type="text" class="ipt"  id="UserEmail" onFocus="notice('15','')"  onblur="notice('15','none')" onKeyUp="javascript:Null_Full(this.name)" value="888" /></td>
+            <td><input name="UserEmail" type="text" class="ipt"  id="UserEmail" onblur="Email(this.id)" value="888" /></td>
             <td><div id="UserEmail1" class="info"><div id="15" class="focus_r" style="display:none;"><div class="msg_tip">请输入您的 E-Mail。（找回密码时使用，请认真填写）</div></div></div></td>
           </tr>
           <tr>

@@ -1300,10 +1300,14 @@ class FckAction extends CommonAction {
         $fck = M('fck');  //注册表
 
 
-        $rs = $fck->field('is_pay,agent_cash')->find($id);
+        $rs = $fck->field('is_pay,agent_cash,is_fenh')->find($id);
         $m = $rs['agent_cash'];
         if ($rs['is_pay'] == 0) {
             $this->error('临时会员不能注册会员！');
+            exit;
+        }
+        if ($rs['is_fenh'] != 0) {
+            $this->error('新增或空单用户不能注册会员！');
             exit;
         }
         if (strlen($_POST['UserID']) < 1) {

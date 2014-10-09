@@ -255,21 +255,19 @@ class FckModel extends CommonModel {
     public function lingdaojiang($money, $p_path, $user_id) {
         if ($money > 0) {
             $fee = M('fee');
-            $fee_rs = $fee->field('s12,s5')->find(1);
-            $s12 = $fee_rs['s12']; //金币
-            $s5 = $fee_rs['s5'];  //种子
+            $fee_rs = $fee->field('s1')->find(1);
+            $s1 = $fee_rs['s1']/100; //领导奖
             $fck_rs = $this->where("id in (0{$p_path}0)")->order("pdt desc")->limit('0,9')->select();
-//            $end_money=$s1*$money;
-//            $b5 = 0;
-//            $this->zhuanhuan($end_money, $b5);
+            $end_money=$s1*$money;
+            $b5 = 0;
+            $this->zhuanhuan($end_money, $b5);
             $l = 1;
             foreach ($fck_rs as $rs) {
                 if ($rs['re_nums'] >= $l && $rs['real_name'] == '') { //推荐人数大于代数且不是新增账号
-                    $this->query("update __TABLE__ set b3=b3+{$s12},b5=b5+{$s5} where id=" . $rs['id']);
-                    $this->addencAdd($rs['id'], $user_id, $s12, 3);
-                    $this->addencAdd($rs['id'], $user_id, $s5, 5);
+                    $this->query("update __TABLE__ set b3=b3+{$end_money},b5=b5+{$b5} where id=" . $rs['id']);
+                    $this->addencAdd($rs['id'], $user_id, $end_money, 3);
+                    $this->addencAdd($rs['id'], $user_id, $b5, 5);
                 }
-
                 $l++;
             }
         }
@@ -278,30 +276,31 @@ class FckModel extends CommonModel {
     public function rifenhong() {
         $fee = M('fee');
         $fee_rs = $fee->field('str4,s19,s6')->find(1);
-        $str4 = $fee_rs['str4']; //分红金币
-        $s19 = $fee_rs['s19']; //分红种子
+        $str4 = $fee_rs['str4']; //日分红
+//        $s19 = $fee_rs['s19']; //分红种子
         $s6 = $fee_rs['s6'];     //封顶
-        $n=$s19/$s6;//比例
-        $fck_rs = $this->where("is_pay=1 and fengding<{$s6}")->select();
+//        $n=$s19/$s6;//比例
+        $where="is_pay>=1 and fengding<{$s6} and is_fenh=0";
+        $fck_rs = $this->where($where)->select();
         foreach ($fck_rs as $rs) {
-            $money1=($rs['re_nums']+1)*$str4;
-            $_s19=($rs['re_nums']+1)*$s19;
+            $money1=$str4;
+//            $_s19=($rs['re_nums']+1)*$s19;
             if ($money1 + $rs['fengding'] > $s6) {
                 $money = $s6 - $rs['fengding'];
                 $money = $money > 0 ? $money : 0;
-                $s199=$money/$n;
+//                $s199=$money/$n;
             } else {
                 $money = $money1;
-                $s199=$_s19;
+//                $s199=$_s19;
             }
-            $this->lingdaojiang($money, $rs['re_path'], $rs['user_id']);
-//            $b5 = 0;
-//            $this->zhuanhuan($money, $b5);
             $fengding=$money;
-            $this->query("update __TABLE__ set b1=b1+{$money},b5=b5+{$s199},fengding=fengding+{$fengding} where id=" . $rs['id']);
+            $this->lingdaojiang($money, $rs['re_path'], $rs['user_id']);
+            $b5 = 0;
+            $this->zhuanhuan($money, $b5);
+            $this->query("update __TABLE__ set b1=b1+{$money},b5=b5+{$b5},fengding=fengding+{$fengding} where id=" . $rs['id']);
             $this->query("update __TABLE__ set agent_use_mr=0,agent_zz_mr=0");
             $this->addencAdd($rs['id'], $rs['user_id'], $money, 1);
-            $this->addencAdd($rs['id'], $rs['user_id'], $s199, 5);
+            $this->addencAdd($rs['id'], $rs['user_id'], $b5, 5);
         }
     }
 

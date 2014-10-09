@@ -51,11 +51,11 @@ function CheckAll(form)
               </tr>
               <tr>
                 <td align="right">报单币：</td>
-                <td align="left"><?php echo ($rs['agent_use']); ?></td>
+                <td align="left"><?php echo ($rs['agent_cash']); ?></td>
               </tr>
               <tr>
                 <td align="right">金币账户：</td>
-                <td align="left"><?php echo ($rs['agent_cash']); ?></td>
+                <td align="left"><?php echo ($rs['agent_use']); ?></td>
               </tr>
               <tr>
                 <td align="right">金种子账户：</td>
