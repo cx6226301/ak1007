@@ -9,7 +9,7 @@ body,html {height:100%; }
 #login_layout {height: 520px; width:750px; left:50%; top:50%; position:absolute; margin-top:-300px;  margin-left:-373px; 
  }
  .zhangh{ position:absolute;left:450px;top:270px; z-index:999; width:70px;}
-.error { height: 24px; line-height:24px; text-indent:30px; position: relative; top:310px; left:300px; }
+.error { height: 24px; line-height:24px; text-indent:30px; position: relative; top:225px; left:270px; }
 #logo { height: 50px; clear: both;}
 .login_dl dt{  text-align: right; width:92px; color:#434343; font-size:12px; line-height:20px; }
 .login_dl dd{  float:right; clear:both; text-align:left; width:180px;}

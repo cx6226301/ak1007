@@ -33,7 +33,7 @@ class FckAction extends CommonAction {
 
             $list2 = $jydt->where("uid!={$myid} and status=0")->order('time asc')->limit('0,1')->select();
 
-            $map3="user_id='{$fck_rs['user_id']}' and status=1 or status=2";
+            $map3="user_id='{$fck_rs['user_id']}' and status=1 or status=2 or status=3";
             $count3 = $jydt->where($map3)->count(); //总页数
             $listrows = C('ONE_PAGE_RE'); //每页显示的记录数
             $listrows = 10; //每页显示的记录数
@@ -146,7 +146,7 @@ class FckAction extends CommonAction {
                 $jydt->startTrans();
                 foreach ($jydt_rs1 as $rs) {
                     $jydt->execute("update __TABLE__ set status=3,after_time={$time} where id=" . $rs['id']);
-                    $fck->execute("update __TABLE__ set agent_use=agent_use+{$rs['agent_use']} where id={$rs['uid']}");
+                    $fck->execute("update __TABLE__ set agent_use=agent_use+{$rs['zhen_use']} where id={$rs['uid']}");
                     $i++;
                 }
                 if ($i == $count1) {
@@ -168,7 +168,7 @@ class FckAction extends CommonAction {
             $fee = M('fee');
             $jydt = M('jydt');
             $fee_rs = $fee->field('str6')->find();
-            $str6 = 0; //税
+            $str6 = $fee_rs['str6']/100; //税
             $fck_rs = $fck->field('agent_use,passopen')->find($id);
             if (md5($_POST['PWD']) != $fck_rs['passopen']) {
                 $this->error("二级密码错误!");
@@ -178,7 +178,7 @@ class FckAction extends CommonAction {
                 $this->error("请输入100的整数倍方可交易");
                 exit;
             }
-            if ($fck_rs['agent_use'] < $agent_use + $str6 || $agent_use <= 0) {
+            if ($fck_rs['agent_use'] < $agent_use *(1+ $str6) || $agent_use <= 0) {
                 $this->error("您的奖金余额不足");
                 exit;
             }

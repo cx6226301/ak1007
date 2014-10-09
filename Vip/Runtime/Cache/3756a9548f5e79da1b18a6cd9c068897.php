@@ -44,7 +44,7 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td style=" line-height:40px;"><input type="submit"   name="button" value="" title="登陆" onmouseover="this.className='btn_1';" onmouseout="this.className='btn_0';" class="btn_0" onClick="ThinkAjax.sendForm('form1','__URL__/checkLogin/',loginHandle,'result')" />
+						<td style=" line-height:40px;"><input type="submit"   name="button" value="" title="登陆" onmouseover="this.className='btn_1';" onmouseout="this.className='btn_0';" class="btn_0" onClick="ThinkAjax.sendForm('form1','__URL__/checkLogin/',loginHandle,'result')" /><a href="__APP__/Public/find_pw">&nbsp;<font style=" color:#90F">找回密码</font></a>
                      　<!--<input type="submit"   name="button" value="" title="注册" onmouseover="this.className='btn_4';" onmouseout="this.className='btn_3';" class="btn_3" onClick="window.location.href='__URL__/users'" />-->
                       
                         </td>

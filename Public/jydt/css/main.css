@@ -1,0 +1,42 @@
+/*-----------公共样式----------------*/
+body {font-size: 12px; color:#333; background:none;}/* background-image:url('../images/bg.jpg');}*/
+body,ul,li,form,h1,h2,h3{ margin:0px;}
+.text{ border:solid 1px #CCCCCC; height:20px;}
+.password{ border:solid 1px #CCCCCC; height:20px;}
+.textarea{ border:solid 1px #CCCCCC;}
+.select{ border:solid 1px #CCCCCC; height:20px;}
+/*-------链接样式--------*/
+a:link {text-decoration:none;color: #000000;}
+a:visited {	text-decoration:none;color: #000000;}
+a:hover {color: #FF0000;text-decoration: underline;}
+a:active {	text-decoration:none;color: #000000;}
+
+/*----------表格样式-----------*/
+
+.box{ width:100%; padding-bottom:10px; padding-top:10px; overflow:visible;}
+.box_title{ height:25px; line-height:25px; width:100%; background-image:url(../images/tu.gif); background-repeat:no-repeat; margin-bottom:10px;}
+.box_title h1{ font-size:14px; font-weight:bold; color:#000; display:block; width:100px; margin-left:28px; text-align:center;}
+.box td{ height:25px; border-bottom:solid 1px #E6E6E6; padding:5px; font-size:12px;}
+
+.box_{ width:100%; padding-bottom:10px; overflow:auto;}
+.box_title_{ height:25px; line-height:25px; width:100%; background-image:url(../images/tu.gif); background-repeat:no-repeat; margin-bottom:10px;}
+.box_title_ h1{ font-size:14px; font-weight:bold; color:#000; display:block; width:100px; margin-left:28px; text-align:center;}
+
+.box_body{ min-height:500px;}
+.box_body_{ height:500px; overflow:auto;}
+.headTr td{ font-weight:bold; text-align:center; height:30px; }
+.bodyTr td{ text-align:center; height:25px; }
+
+/*--------------------------按钮控件样式-------------------------------*/
+.st_btn01 { padding:2px; background-color:#FFFFFF; border:1px solid #666666; cursor:pointer; border-radius:3px; behavior: url(../js/ie-css3.htc); color:#666666;}
+.st_btn01_a { padding:5px 5px 3px 5px; background-color:#FFFFFF; border:1px solid #666666; cursor:pointer; border-radius:3px; behavior: url(../js/ie-css3.htc); color:#666666;}
+
+/*分页样式*/
+.kuai{ width:auto; text-align:center; margin-left:auto; margin-right:auto;}
+.kuai_float{ float:left; height:25px; line-height:25px; display:block;}
+.kuai_clean{ clear:both;}
+.kuai_1{ border:solid 1px #999999; margin-left:5px;  background-color:#FFEDE1; display:block; float:left; padding:0px 8px 0px 8px;}
+.kuai_text{ border:solid 1px #999999; width:30px; height:23px; line-height:23px; margin-left:5px; text-align:center;}
+.kuai_input{ border:solid 1px #999999; border-radius:3px; behavior: url(../js/ie-css3.htc); width:40px; height:27px; _height:29px; margin-left:5px; background-color:#FFFFFF; color:#000000; }
+
+.alert_BG{ background-color:#FFFFFF; opacity: 0.6; filter: "alpha(opacity=60)"; filter: alpha(opacity=60); zoom: 1;}

@@ -342,7 +342,7 @@ class FckModel extends CommonModel {
         $re_nums = $fck_rs['re_nums'];
         $is_pay = $fck_rs['is_pay'];
         if ($is_pay <= 1 && $re_nums >= $str2) {
-            $this->query('update __TABLE__ set is_agent=2 where id=' . $re_id);
+            $this->query('update __TABLE__ set is_agent=2 where id=' . $re_id); //升为报单中心
         }
     }
 

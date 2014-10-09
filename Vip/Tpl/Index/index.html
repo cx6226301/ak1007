@@ -82,6 +82,7 @@ function setPrice(data1,data2,data3){
                                     <li><a href="__APP__/Fck/cody/c_id/6" target="main">账户转账</a></li>
                                     <li><a href="__APP__/Fck/cody/c_id/7" target="main">货币提现</a></li>
                                     <li><a href="__APP__/Fck/cody/c_id/10" target="main">充值申请</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/20" target="main">交易大厅</a></li>
                                     <!--<li><a href="__APP__/Fck/cody/c_id/18" target="main">晋级申请</a></li>-->
                                     <!--<li><a href="__APP__/Recharge/cody/c_id/3" target="main">在线充值</a></li>-->
                                     <!--<li><a href="__APP__/Phonecard/cody/c_id/2" target="main">电话卡记录</a></li>-->

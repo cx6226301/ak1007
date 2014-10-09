@@ -28,7 +28,7 @@ function yhServer(Ful){
     <form name="form1" method="post" action="__URL__/transferMoneyAC" onSubmit="{return CheckForm();}">
       <table width="100%" border="0" cellpadding="3" cellspacing="0">
           <tr>
-            <td align="right">奖金币： </td>
+            <td align="right">金币： </td>
             <td colspan="2" width="80%"><span class="hong">{$rs.agent_use}</span></td>
           </tr>
 		  <tr>
@@ -39,9 +39,9 @@ function yhServer(Ful){
             <td align="right">类型：</td>
             <td colspan="2">
             <select name="select" id="select" onchange="Selev(this.value)" onpropertychange="Selev(this.value)">
-              <option value="1"> 奖金币 转给 其它会员 </option>
-              <option value="2"> 奖金币 转 报单币 </option>
-              <option value="3"> 报单币 转给 其他会员  </option>
+              <option value="1"> 金币 转给 其它会员 </option>
+              <option value="2"> 金币 转 报单币 </option>
+              <!--<option value="3"> 报单币 转给 其他会员  </option>-->
             </select>
             </td>
           </tr>
@@ -84,8 +84,8 @@ function yhServer(Ful){
 		<td>{$vo['in_userid']}</td>
 		<td>{$vo['rdt']|date='Y-m-d H:i:s',###}</td>
 		<td>{$vo['epoint']}</td>
-        <td><eq name="vo['type']" value="1">奖金币转给其它会员<else/></eq>
-        	<eq name="vo['type']" value="2">奖金币转报单币<else/></eq>
+        <td><eq name="vo['type']" value="1">金币转给其它会员<else/></eq>
+        	<eq name="vo['type']" value="2">金币转报单币<else/></eq>
         	<eq name="vo['type']" value="3">报单币转给其它会员<else/></eq>
         	<eq name="vo['type']" value="4">电子币购买电子股<else/></eq>
         </td>

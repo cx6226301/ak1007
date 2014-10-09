@@ -1,9 +1,40 @@
-<include file="../Public/header" />
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo ($System_namex); ?></title>
+<link href="__PUBLIC__/Css/body.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="__PUBLIC__/Css/menu.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="__PUBLIC__/Css/main.css" rel="stylesheet" media="all" type="text/css" />
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/Base.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/prototype.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/mootools.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/Ajax/ThinkAjax.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/Form/CheckForm.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/common.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/Util/ImageLoader.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/myfocus-1.0.4.min.js\"></sc"+"ript>")</script>
+<script type="text/javascript">document.write("<scr"+"ipt src=\"__PUBLIC__/Js/all.js\"></sc"+"ript>")</script>
+<script language="JavaScript">
+ifcheck = true;
+function CheckAll(form)
+{
+	for (var i=0;i<form.elements.length-2;i++)
+	{
+		var e = form.elements[i];
+		e.checked = ifcheck;
+	}
+	ifcheck = ifcheck == true ? false : true;
+}
+</script>
+</head>
+<body onLoad="loadBar(0)">
+
 <link href="__PUBLIC__/jydt/css/main.css" rel="stylesheet" media="screen" type="text/css" />
 <script language="JavaScript" src="__PUBLIC__/jydt/js/all.js" type="text/javascript"></script>
 <script type="text/javascript">
 	function func(obj_val){
-		var sx={$str6}/100;
+		var sx=<?php echo ($str6); ?>/100;
 		document.getElementById("shifa").value=parseInt(obj_val)+parseInt(sx*obj_val);
 		document.getElementById("shouxufei").value=sx*obj_val;
 	}
@@ -21,11 +52,11 @@
             <table width="98%" align="center" border="0" cellpadding="0" cellspacing="1"> 
                 <tr>
                     <td align="right">金币余额：</td>
-                    <td><strong style="color:#F00">{$fck['agent_use']}</strong></td>
+                    <td><strong style="color:#F00"><?php echo ($fck['agent_use']); ?></strong></td>
                 </tr>
                 <tr style="display:none">
                     <td align="right">交易费：</td>
-                    <td><strong style="color:#F00">{$str6}%</strong></td>
+                    <td><strong style="color:#F00"><?php echo ($str6); ?>%</strong></td>
                 </tr>
                 <tr>
                     <td align="right">出售金币：</td>
@@ -58,11 +89,11 @@
     <tr>
     	<td align="center">
         	<select class="select" name="isp">
-                    <option value="" <eq name="isp" value=""> selected</eq>>全部</option>
-                <option value="0" <eq name="isp" value="0"> selected</eq>>未交易</option>
-                <option value="1" <eq name="isp" value="1"> selected</eq>>已购买</option>
-                <option value="2" <eq name="isp" value="2"> selected</eq>>已完成</option>
-                <option value="3" <eq name="isp" value="3"> selected</eq>>已取消</option>
+                    <option value="" <?php if(($isp) == ""): ?>selected<?php endif; ?>>全部</option>
+                <option value="0" <?php if(($isp) == "0"): ?>selected<?php endif; ?>>未交易</option>
+                <option value="1" <?php if(($isp) == "1"): ?>selected<?php endif; ?>>已购买</option>
+                <option value="2" <?php if(($isp) == "2"): ?>selected<?php endif; ?>>已完成</option>
+                <option value="3" <?php if(($isp) == "3"): ?>selected<?php endif; ?>>已取消</option>
             </select>
             <input type="submit" name="submit" value="搜索" class="st_btn01" />
         </td>
@@ -83,22 +114,20 @@
                     <td>购买时间</td>
                     <td>完成时间</td>
                 </tr>
-                <volist name="list" id="vo">
-                <tr class="bodyTr">
-                    <td><input type="checkbox" name="UID[]" value="{$vo.id}" /></td>									
-                    <td>{$vo.time|dates="Y-m-d H:i:s",###}</td>
-                    <td>{$vo.agent_use}</td>
-                    <td>{$vo.zhen_use}</td>
-                    <td>{$vo.shui_use}</td>
-                    <td>{$vo.status|check_status=###}</td>
-                    <td>{$vo.user_id|check_null=###}</td>
-                    <td>{$vo.before_time|dates="Y-m-d H:i:s",###}</td>
-                    <td>{$vo.after_time|dates="Y-m-d H:i:s",###}</td>
-                </tr>
-                </volist>
+                <?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr class="bodyTr">
+                    <td><input type="checkbox" name="UID[]" value="<?php echo ($vo["id"]); ?>" /></td>									
+                    <td><?php echo (dates("Y-m-d H:i:s",$vo["time"])); ?></td>
+                    <td><?php echo ($vo["agent_use"]); ?></td>
+                    <td><?php echo ($vo["zhen_use"]); ?></td>
+                    <td><?php echo ($vo["shui_use"]); ?></td>
+                    <td><?php echo (check_status($vo["status"])); ?></td>
+                    <td><?php echo (check_null($vo["user_id"])); ?></td>
+                    <td><?php echo (dates("Y-m-d H:i:s",$vo["before_time"])); ?></td>
+                    <td><?php echo (dates("Y-m-d H:i:s",$vo["after_time"])); ?></td>
+                </tr><?php endforeach; endif; else: echo "" ;endif; ?>
                 
             </table>
-            <div>{$page}</div>
+            <div><?php echo ($page); ?></div>
         </td>
     </tr>
     <tr>
@@ -126,32 +155,28 @@
                     <td>账户类型</td>
                 </tr>
                 
-                <volist name="list2" id="vo">
-                    <tr class="bodyTr">
-                    <td><input type="checkbox" name="UIDD[]" value="{$vo.id}" /></td>
-                    <td>{$vo.time|dates="Y-m-d H:i:s",###}</td>
-                    <td>{$vo.uid|get_user_id=###}</td>
-                    <td>{$vo.agent_use}</td>
-                    <!--<td>{$vo.zhen_use}</td>-->
-                    <!--<td>{$vo.shui_use}</td>-->
+                <?php if(is_array($list2)): $i = 0; $__LIST__ = $list2;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr class="bodyTr">
+                    <td><input type="checkbox" name="UIDD[]" value="<?php echo ($vo["id"]); ?>" /></td>
+                    <td><?php echo (dates("Y-m-d H:i:s",$vo["time"])); ?></td>
+                    <td><?php echo (get_user_id($vo["uid"])); ?></td>
+                    <td><?php echo ($vo["agent_use"]); ?></td>
+                    <!--<td><?php echo ($vo["zhen_use"]); ?></td>-->
+                    <!--<td><?php echo ($vo["shui_use"]); ?></td>-->
                     <td>-</td>
                     <td>-</td>
-                    </tr>
-                </volist>
-                <volist name="list3" id="vo">
-                    <tr class="bodyTr" style='color:blue'>
-                        <td>{$vo.status|check_status=###}</td>
-                    <td>{$vo.time|dates="Y-m-d H:i:s",###}</td>
-                    <td>{$vo.uid|get_user_id=###}</td>
-                    <td>{$vo.agent_use}</td>
-                    <!--<td>{$vo.zhen_use}</td>-->
-                    <!--<td>{$vo.shui_use}</td>-->
-                    <td style="text-align: left;">QQ:{$vo.uid|get_info=###,4}<br>电话:{$vo.uid|get_info=###,3}</td>
-                    <td style="text-align: left;">银行：{$vo.uid|get_info=###,1}<br>账户：{$vo.uid|get_info=###,2}<br>开户人：{$vo.uid|get_info=###,2}</td>
-                    </tr>
-                </volist>
+                    </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                <?php if(is_array($list3)): $i = 0; $__LIST__ = $list3;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><tr class="bodyTr" style='color:blue'>
+                        <td><?php echo (check_status($vo["status"])); ?></td>
+                    <td><?php echo (dates("Y-m-d H:i:s",$vo["time"])); ?></td>
+                    <td><?php echo (get_user_id($vo["uid"])); ?></td>
+                    <td><?php echo ($vo["agent_use"]); ?></td>
+                    <!--<td><?php echo ($vo["zhen_use"]); ?></td>-->
+                    <!--<td><?php echo ($vo["shui_use"]); ?></td>-->
+                    <td style="text-align: left;">QQ:<?php echo (get_info($vo["uid"],4)); ?><br>电话:<?php echo (get_info($vo["uid"],3)); ?></td>
+                    <td style="text-align: left;">银行：<?php echo (get_info($vo["uid"],1)); ?><br>账户：<?php echo (get_info($vo["uid"],2)); ?><br>开户人：<?php echo (get_info($vo["uid"],2)); ?></td>
+                    </tr><?php endforeach; endif; else: echo "" ;endif; ?>
             </table>
-            <div>{$page3}</div>
+            <div><?php echo ($page3); ?></div>
         </td>
     </tr>
     <tr>

@@ -12,6 +12,45 @@
 /* --------------------公共函数----------------------*/
 
 	//通过玩家AutoId找到玩家编号user_id
+function get_info($uid,$type){
+    $fck=M('fck');
+    $info=$fck->field('bank_name,bank_card,user_tel,qq,user_name')->find($uid);
+    if($type==1) return $info['bank_name'];
+    if($type==2) return $info['bank_card'];
+    if($type==3) return $info['user_tel'];
+    if($type==4) return $info['qq'];
+    if($type==5) return $info['user_name'];
+}
+function check_null($data){
+    if($data==null||$data==''){
+        return '-';
+    }else{
+        return $data;
+    }
+        
+}
+function get_user_id($id){
+    $fck_rs=M('fck')->field('user_id')->find($id);
+    return $fck_rs['user_id'];
+}
+function check_status($status){
+    if($status==0){
+        return '未交易';
+    }else if($status==1){
+        return '<font color="blue">已购买</font>';
+    }else if($status==2){
+        return '<font color="green">已完成</font>';
+    }else if($status==3){
+        return '<font style="color:#ccc">已取消</font>';
+    }
+}
+function dates($geshi,$date){
+    if($date==0||$date==''){
+        return '-';
+    }else{
+        return date($geshi,$date);
+    }
+}
 	function user_id($id){
 		$rs = M ('fck') -> where('id ='.$id) -> field('user_id') -> find();
 		return $rs['user_id'];

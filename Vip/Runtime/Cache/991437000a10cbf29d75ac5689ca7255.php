@@ -117,6 +117,11 @@ function CheckAll(form)
 				<td class="center"><input name="s18" type="text" id="s18" value="<?php echo ($fee_s18); ?>" size="80" maxlength="80" /> 用| 分割</td>
 </tr>
 <tr>
+				<td align="right">(金币)交易手续费：</td>
+				<td class="center"><input name="str6" type="text" id="str6" value="<?php echo ($fee_str6); ?>" size="8" maxlength="12" />
+                百分比</td>
+</tr>
+<tr>
 				<td align="right">转账手续费：</td>
 				<td class="center"><input name="s4" type="text" id="s4" value="<?php echo ($fee_s4); ?>" size="8" maxlength="12" />
                 百分比</td>
