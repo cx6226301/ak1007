@@ -1254,6 +1254,7 @@ class YouZiAction extends CommonAction {
             $data['email'] = $_POST['email'];
             $data['agent_use'] = $_POST['AgentUse'];
             $data['agent_cash'] = $_POST['AgentCash'];
+            $data['agent_zz'] = $_POST['AgentZz'];
             $data['zjj'] = $_POST['zjj'];
             $data['fanli'] = $_POST['fanli'];
             $data['fanli_time'] = $_POST['fanli_time'];
@@ -4803,7 +4804,7 @@ class YouZiAction extends CommonAction {
             $sql .= "`b5`=0,b6=0,b7=0,b8=0,b9=0,b10=0,b11=0,b12=0,re_nums=0,man_ceng=0,";
             $sql .= "re_peat_money=0,cpzj=0,duipeng=0,_times=0,fanli=0,fanli_time=$nowdate,fanli_num=0,day_feng=0,get_date=$nowday,get_numb=0,";
             $sql .= "get_level=0,is_xf=0,xf_money=0,is_zy=0,zyi_date=0,zyq_date=0,down_num=0,agent_xf=0,agent_kt=0,agent_gp=0,gp_num=0,xy_money=0,";
-            $sql .= "peng_num=0,re_f4=0,real_nums=0,agent_use_mr=0,agent_zz_mr=0";
+            $sql .= "peng_num=0,re_f4=0,real_nums=0,agent_use_mr=0,agent_zz_mr=0,shop_id=1,shop_name=100000";
 
             $model->execute("UPDATE __TABLE__ SET " . $sql);
             $model22->execute("UPDATE __TABLE__ SET day_cpzj=0 where id=1");

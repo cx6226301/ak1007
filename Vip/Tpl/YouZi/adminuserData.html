@@ -128,14 +128,20 @@
           <td colspan="3" style="height:5px;"><hr></td>
         </tr>
         <tr>
-          <td align="right">现金账户：</td>
+          <td align="right">报单币：</td>
+          <td><input name="AgentCash" type="text" id="AgentCash" value="{$vo['agent_cash']}" maxlength="20" class="ipt" onkeyup="javascript:Null_Int(this.name)" onfocus="notice('14','')"  onblur="notice('14','none')" /></td>
+          <td><div id="AgentCash1" class="info"><div id="14" class="focus_r" style="display:none;"><div class="msg_tip">请输入数字。</div></div></div></td>
+        </tr>
+        <tr>
+          <td align="right">金币账户：</td>
           <td><input name="AgentUse" type="text" id="AgentUse" value="{$vo['agent_use']}" maxlength="20" class="ipt" onkeyup="javascript:Null_Int(this.name)" onfocus="notice('13','')"  onblur="notice('13','none')" /></td>
           <td><div id="AgentUse1" class="info"><div id="13" class="focus_r" style="display:none;"><div class="msg_tip">请输入数字。</div></div></div></td>
         </tr>
+        
         <tr>
-          <td align="right">电子账户：</td>
-          <td><input name="AgentCash" type="text" id="AgentCash" value="{$vo['agent_cash']}" maxlength="20" class="ipt" onkeyup="javascript:Null_Int(this.name)" onfocus="notice('14','')"  onblur="notice('14','none')" /></td>
-          <td><div id="AgentCash1" class="info"><div id="14" class="focus_r" style="display:none;"><div class="msg_tip">请输入数字。</div></div></div></td>
+          <td align="right">金种子账户：</td>
+          <td><input name="AgentZz" type="text" id="AgentCash" value="{$vo['agent_zz']}" maxlength="20" class="ipt" onkeyup="javascript:Null_Int(this.name)" onfocus="notice('24','')"  onblur="notice('24','none')" /></td>
+          <td><div id="AgentZz1" class="info"><div id="24" class="focus_r" style="display:none;"><div class="msg_tip">请输入数字。</div></div></div></td>
         </tr>
         <tr style="display:none">
           <td align="right">重复消费：</td>

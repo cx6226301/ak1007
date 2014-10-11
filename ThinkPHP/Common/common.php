@@ -64,6 +64,9 @@ function getdengji($user_id) {
     $fee = M('fee');
     $fck = M('fck');
     $fck_rs = $fck->where("user_id='{$user_id}'")->find();
+    if($fck_rs['qk'] == 0 && $fck_rs['is_pay'] == 1 && $fck_rs['is_fenh'] == 1){
+        return "未激活会员";
+    }
     if ($fck_rs['is_agent'] == 2)
         return "报单中心";
     else {

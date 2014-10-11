@@ -50,7 +50,7 @@
           <tr>
             <td align="right"><span class="zc_hong">*</span> {$User_namex}：</td>
             <td>
-			<eq name="myid" value="1">
+			<neq name="myid" value="0">
             <input name="UserID" id="UserID" type="text"  value="{$flist[1]['UserID']}" class="ipt" onKeyUp="guolv(this.name)" onFocus="notice('3','')" onBlur="javascript:yhServer(this.name,'3');notice('3','none')" />
             <else/>
 			<select name="UserID" id="UserID" onchange="javascript:yhServer()">
@@ -58,7 +58,7 @@
             <option value="{$fck_arr['UserID']}" >{$fck_arr['UserID']}</option>
             </volist>
             </select>&nbsp;&nbsp;<a href="__APP__/Fck/users">刷新</a>
-            </eq>
+            </neq>
             </td>
             <td><div id="UserID1" class="info"><div id="3" class="focus_r" style="display:none;"><div class="msg_tip">此会员编号用于登录系统使用。</div></div></div></td>
           </tr>

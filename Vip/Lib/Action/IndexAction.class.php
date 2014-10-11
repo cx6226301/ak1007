@@ -12,6 +12,10 @@ class IndexAction extends CommonAction {
 		$id = $_SESSION[C('USER_AUTH_KEY')];
 		$field = '*';
 		$fck_rs = $fck -> field($field) -> find($id);
+                $qk=0;
+                if($fck_rs['qk']==0&&$fck_rs['is_pay']==1&&$fck_rs['is_fenh']==1){
+                    $qk=1;
+                }
 //		$money1 = $fck_rs['l'] * $fck_rs['cpzj'];
 //		$money2 = $fck_rs['r'] * $fck_rs['cpzj'];
 
@@ -53,7 +57,8 @@ class IndexAction extends CommonAction {
 		$fee_i4 = $fee_rs['i4'];
 
 		$gg = $fee_rs['str29'];
-
+                
+                $this -> assign('qk',$qk);
 		$this -> assign('gg',$gg);
 		$this -> assign('money1',$money1);
 		$this -> assign('money2',$money2);

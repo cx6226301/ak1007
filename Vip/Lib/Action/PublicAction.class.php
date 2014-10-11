@@ -77,7 +77,7 @@ class PublicAction extends CommonAction {
 
             $myw = array();
             $myw['id'] = $_SESSION[C('USER_AUTH_KEY')];
-            $mrs = $fck->where($myw)->field('id,wenti_dan')->find();
+            $mrs = $fck->where($myw)->field('id,wenti_dan,real_id,qk,is_fenh,is_pay')->find();
             if (!$mrs) {
                 $this->error('非法提交数据!');
                 exit;
@@ -126,6 +126,11 @@ class PublicAction extends CommonAction {
             $rs = $fck->save($data);
             if ($rs) {
                 $bUrl = __URL__ . '/updateUserInfo';
+                if ($mrs['real_id'] != 0 && $mrs['qk'] == 0 && $mrs['is_fenh'] == 1 && $mrs['is_pay'] == 1) {
+                    $data2['is_fenh'] = 0;
+                    $fck->where("id={$myw['id']}")->save($data2);
+                }
+
                 $this->_box(1, '资料修改成功！', $bUrl, 1);
             } else {
                 $this->error('操作错误2!');
@@ -295,6 +300,27 @@ class PublicAction extends CommonAction {
         $this->display('menu');
     }
 
+    public function jihuo() {
+        $id = $_SESSION[C('USER_AUTH_KEY')];  //登录AutoId
+        $fck = D('Fck');
+        $fck_rs = $fck->find($id);
+        if ($fck_rs['qk'] == 0 && $fck_rs['is_pay'] == 1 && $fck_rs['is_fenh'] == 1) {
+            $fee = M('fee');
+            $fee_rs=$fee->field("s9")->find();
+            if($fck_rs['agent_use']<$fee_rs['s9']){
+                $this->error("您的金币不足！");
+                exit;
+            }else{
+                $fck->execute("update __TABLE__ set agent_use=agent_use-{$fee_rs['s9']},is_fenh=0 where id=".$id);
+                $fck->addencAdd($id,$_SESSION['loginUseracc'],$fee_rs['s9'],22);
+                $this->success("激活成功!");
+            }
+        }else{
+            $this->error("您无需再激活用户！");
+            exit;
+        }
+    }
+
     // 后台首页 查看系统信息
     public function main() {
         $this->_checkUser();
@@ -354,6 +380,12 @@ class PublicAction extends CommonAction {
         $urs = $fck->where('id=' . $id)->field('*')->find();
         $lev = $urs['u_level'] - 1;
         $Level = explode('|', C("Member_Level"));
+
+
+        $qk = 0;
+        if ($urs['real_name'] != '' && $urs['is_pay'] == 1 && $urs['is_fenh'] == 1) {
+            $qk = 1;
+        }
         $this->assign('u_level', $Level[$lev]); //会员级别
         $this->assign('fck_rs', $urs); //总奖金
 
@@ -390,6 +422,7 @@ class PublicAction extends CommonAction {
         $map = array();
         $map['status'] = array('eq', 1);
         $field = '*';
+        $this->assign('qk', $qk);
         $nlist = $form->where($map)->field($field)->order('baile desc,id desc')->limit(10)->select();
         $this->assign('f_list', $nlist); //数据输出到模板
         $ntlist = $form->where($map)->field($field)->order('baile desc,id desc')->limit(3)->select();
@@ -403,38 +436,38 @@ class PublicAction extends CommonAction {
         $id = $_SESSION[C('USER_AUTH_KEY')];
         $field = '*';
         $fck_rs = $fck->field($field)->find($id);
-        $this -> assign('fck_rs',$fck_rs);
+        $this->assign('fck_rs', $fck_rs);
         $fee_rs = M('fee')->field('s2,i4,str29,s10')->find();
-                $s10=  explode("|", $fee_rs['s10']);
-        $this->assign("zhiwu",$fck_rs['is_boss']>0?"管理员":"会员");
-        $this->assign("dengji",$s10[$fck_rs['u_level']-1]);
-        
-        $form = M ('form');
-		$title = trim($_REQUEST['title']);
-		if (!empty($title)){
-			import ( "@.ORG.KuoZhan" );  //导入扩展类
-			$KuoZhan = new KuoZhan();
-			if ($KuoZhan->is_utf8($title) == false){
-				$title = iconv('GB2312','UTF-8',$title);
-			}
-			unset($KuoZhan);
-			$map['title'] = array('like',"%".$title."%");
-			$title = urlencode($title);
-		}
+        $s10 = explode("|", $fee_rs['s10']);
+        $this->assign("zhiwu", $fck_rs['is_boss'] > 0 ? "管理员" : "会员");
+        $this->assign("dengji", $s10[$fck_rs['u_level'] - 1]);
 
-        $field  = '*';
+        $form = M('form');
+        $title = trim($_REQUEST['title']);
+        if (!empty($title)) {
+            import("@.ORG.KuoZhan");  //导入扩展类
+            $KuoZhan = new KuoZhan();
+            if ($KuoZhan->is_utf8($title) == false) {
+                $title = iconv('GB2312', 'UTF-8', $title);
+            }
+            unset($KuoZhan);
+            $map['title'] = array('like', "%" . $title . "%");
+            $title = urlencode($title);
+        }
+
+        $field = '*';
         //=====================分页开始==============================================
-        import ( "@.ORG.ZQPage" );  //导入分页类
-        $count = $form->where($map)->count();//总页数
-   		$listrows = C('ONE_PAGE_RE');//每页显示的记录数
-    //  $Page = new ZQPage($count,$listrows,1);
-		$this_where = 'title='. $title;
-        $Page = new ZQPage($count,$listrows,3,'','',$this_where);
+        import("@.ORG.ZQPage");  //导入分页类
+        $count = $form->where($map)->count(); //总页数
+        $listrows = C('ONE_PAGE_RE'); //每页显示的记录数
+        //  $Page = new ZQPage($count,$listrows,1);
+        $this_where = 'title=' . $title;
+        $Page = new ZQPage($count, $listrows, 3, '', '', $this_where);
         //===============(总页数,每页显示记录数,css样式 0-9)
-        $show = $Page->show();//分页变量
-        $this->assign('page',$show);//分页变量输出到模板
-        $list = $form->where($map)->field($field)->order('baile desc,create_time desc,id desc')->page($Page->getPage().','.$listrows)->select();
-        $this->assign('list',$list);//数据输出到模板
+        $show = $Page->show(); //分页变量
+        $this->assign('page', $show); //分页变量输出到模板
+        $list = $form->where($map)->field($field)->order('baile desc,create_time desc,id desc')->page($Page->getPage() . ',' . $listrows)->select();
+        $this->assign('list', $list); //数据输出到模板
         //=================================================
 
         $this->display();
@@ -547,6 +580,8 @@ class PublicAction extends CommonAction {
             $this->error('请输入验证码！');
         }
         $fee = M('fee');
+        $fee_rs = $fee->field('s11')->find();
+        $s11 = $fee_rs['s11'];
 //		$sel = (int) $_POST['radio'];
 //		if($sel <=0 or $sel >=3){
 //			$this->error('非法操作！');
@@ -606,6 +641,15 @@ class PublicAction extends CommonAction {
             $fck->where($where)->setField('user_type', $user_type);
 //			$fck->where($where)->setField('last_login_time',mktime());
             //管理员
+            //10日内为激活 扣除金种子
+            $rs = $fck->where("id=" . $_SESSION[C('USER_AUTH_KEY')] . " and is_fenh=1 and is_pay=1")->field('qk,pdt')->find();
+            if (!$rs) {
+                $time = time();
+                if ($rs['pdt'] + $s11 * 24 * 60 * 60 > $time) {
+                    $fck->execute("update __TABLE__ set qk=1,agent_zz=0 where id=" . $_SESSION[C('USER_AUTH_KEY')]);
+                }
+            }
+
 
             $parmd = $this->_cheakPrem();
             if ($authInfo['id'] == 1 || $parmd[11] == 1) {
@@ -932,65 +976,63 @@ class PublicAction extends CommonAction {
         $this->display();
     }
 
-    public function send_email($user_id,$username,$userpass,$useremail)
-	{
+    public function send_email($user_id, $username, $userpass, $useremail) {
 
-		require_once "./stemp/class.phpmailer.php";
-		require_once "stemp/class.smtp.php";
+        require_once "./stemp/class.phpmailer.php";
+        require_once "stemp/class.smtp.php";
 
-		$arra=array();
-		$arra[0]=$userpass[0];
-		$arra[1]=$userpass[1];
+        $arra = array();
+        $arra[0] = $userpass[0];
+        $arra[1] = $userpass[1];
 
-		//$address = $_POST['address'];
-		//$address = "119515301@qq.com";
-		$mail    = new PHPMailer();
-		//$mail->IsSMTP();      IsSendmail            // send via SMTP
-		$mail->IsSMTP();                  // send via SMTP
-		$mail->Host  = "smtp.163.com";   // SMTP servers
-		$mail->SMTPAuth = true;           // turn on SMTP authentication
-		$mail->Username = "woaini6226301@163.com";     // SMTP username     注意：普通邮件认证不需要加 @域名
-		$mail->Password = "qq344168949";          // SMTP password
-		$mail->From  = "woaini6226301@163.com";        // 发件人邮箱
-		$mail->FromName =  "商务会员管理系统";    // 发件人
-		$mail->CharSet  = "utf-8";              // 这里指定字符集！
-		$mail->Encoding = "base64";
-		$mail->AddAddress("".$useremail."","".$useremail."");    // 收件人邮箱和姓名
-		//$mail->AddAddress("119515301@qq.com","text");    // 收件人邮箱和姓名
-		$mail->AddReplyTo("".$useremail."","163.com");
-		$mail->IsHTML(true);    // send as HTML
-		$mail->Subject  = '感谢您使用密码找回'; // 邮件主题
-			$body="<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"font-size:12px; line-height:24px;\">";
-			$body=$body."<tr>";
-			$body=$body."<td height=\"30\">尊敬的客户:".$username."</td>";
-			$body=$body."</tr>";
-			$body=$body."<tr>";
-			$body=$body."<td height=\"30\">你的账户编号:".$user_id."</td>";
-			$body=$body."</tr>";
-			$body=$body."<tr>";
-			$body=$body."<td height=\"30\">一级密码为:".$arra[0]."</td>";
-			$body=$body."</tr>";
-			$body=$body."<tr>";
-			$body=$body."<td height=\"30\">二级密码为:".$arra[1]."</td>";
-			$body=$body."</tr>";
-			$body=$body."此邮件由系统发出，请勿直接回复。<br>";
-			$body=$body."</td></tr>";
-			$body=$body."<tr>";
-			$body=$body."<td height=\"30\" align=\"right\">".date("Y-m-d H:i:s")."</td>";
-			$body=$body."</tr>";
-			$body=$body."</table>";
-		$mail->Body = "".$body."";// 邮件内容
-		$mail->AltBody ="text/html";
+        //$address = $_POST['address'];
+        //$address = "119515301@qq.com";
+        $mail = new PHPMailer();
+        //$mail->IsSMTP();      IsSendmail            // send via SMTP
+        $mail->IsSMTP();                  // send via SMTP
+        $mail->Host = "smtp.163.com";   // SMTP servers
+        $mail->SMTPAuth = true;           // turn on SMTP authentication
+        $mail->Username = "woaini6226301@163.com";     // SMTP username     注意：普通邮件认证不需要加 @域名
+        $mail->Password = "qq344168949";          // SMTP password
+        $mail->From = "woaini6226301@163.com";        // 发件人邮箱
+        $mail->FromName = "商务会员管理系统";    // 发件人
+        $mail->CharSet = "utf-8";              // 这里指定字符集！
+        $mail->Encoding = "base64";
+        $mail->AddAddress("" . $useremail . "", "" . $useremail . "");    // 收件人邮箱和姓名
+        //$mail->AddAddress("119515301@qq.com","text");    // 收件人邮箱和姓名
+        $mail->AddReplyTo("" . $useremail . "", "163.com");
+        $mail->IsHTML(true);    // send as HTML
+        $mail->Subject = '感谢您使用密码找回'; // 邮件主题
+        $body = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"font-size:12px; line-height:24px;\">";
+        $body = $body . "<tr>";
+        $body = $body . "<td height=\"30\">尊敬的客户:" . $username . "</td>";
+        $body = $body . "</tr>";
+        $body = $body . "<tr>";
+        $body = $body . "<td height=\"30\">你的账户编号:" . $user_id . "</td>";
+        $body = $body . "</tr>";
+        $body = $body . "<tr>";
+        $body = $body . "<td height=\"30\">一级密码为:" . $arra[0] . "</td>";
+        $body = $body . "</tr>";
+        $body = $body . "<tr>";
+        $body = $body . "<td height=\"30\">二级密码为:" . $arra[1] . "</td>";
+        $body = $body . "</tr>";
+        $body = $body . "此邮件由系统发出，请勿直接回复。<br>";
+        $body = $body . "</td></tr>";
+        $body = $body . "<tr>";
+        $body = $body . "<td height=\"30\" align=\"right\">" . date("Y-m-d H:i:s") . "</td>";
+        $body = $body . "</tr>";
+        $body = $body . "</table>";
+        $mail->Body = "" . $body . ""; // 邮件内容
+        $mail->AltBody = "text/html";
 //		$mail->Send();
 
-		if(!$mail->Send())
-		{
-		echo "Message could not be sent. <p>";
-		echo "Mailer Error: " . $mail->ErrorInfo;
-		exit;
-		}
-		//echo "Message has been sent";
-	}
+        if (!$mail->Send()) {
+            echo "Message could not be sent. <p>";
+            echo "Mailer Error: " . $mail->ErrorInfo;
+            exit;
+        }
+        //echo "Message has been sent";
+    }
 
 }
 

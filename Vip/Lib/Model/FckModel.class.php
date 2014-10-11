@@ -373,6 +373,7 @@ class FckModel extends CommonModel {
                 login_count => '0',
                 info => '信息',
                 name => '名称',
+                is_fenh => 1,
                 password => $fck_rss['password'],
                 passopen => $fck_rss['passopen'],
                 pwd1 => $fck_rss['pwd1'],

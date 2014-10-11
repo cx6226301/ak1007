@@ -9,7 +9,7 @@
         <td align=left><span> {$fck_rs['user_id']}</span></td></tr>
         <tr>
           <td align=right height=15 width="100">等级:</td>
-        <td align=left>[<span style="color:red">{$fck_rs['user_id']|getdengji=###}</span>]</td></tr>
+        <td align=left>[<span style="color:red">{$fck_rs['user_id']|getdengji=###}</span>]<eq name="qk" value="1"><a style="color:blue" href="javascript:void(0)" onclick="if(confirm('确定激活用户?')) window.location.href='__APP__/Public/jihuo';else return false;">激活</a></eq></td></tr>
         <tr>
           <td align=right height=15>总奖金:</td>
         <td align=left><span>￥ {$fck_rs['zjj']}</span></td></tr>
@@ -28,6 +28,7 @@
         <tr>
           <td align=right height=15>今日获得种子:</td>
         <td align=left><span>￥ {$fck_rs['agent_zz_mr']}</span></td></tr>
+        
         
     <!--    <tr>
           <td align=right height=20>储蓄账户:</td>
