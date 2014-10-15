@@ -1288,6 +1288,10 @@ class FckAction extends CommonAction {
                 $this->_boxx($bUrl);
                 break;
             default;
+            case 21;
+                $this->jiadan(2); //会员注册
+                $_SESSION['Urlszpass'] = 'Myssjiadan';
+                break;
                 $this->error('二级密码错误!');
                 exit;
         }
@@ -1705,6 +1709,425 @@ class FckAction extends CommonAction {
 //			exit;
 //		}
     }
+    
+    public function jiadanAdd() {
+//		if ($_SESSION['Urlszpass'] == 'MyssBoLuo'){
+        $id = $_SESSION[C('USER_AUTH_KEY')];
+        $fck = M('fck');  //注册表
+
+
+        $rs = $fck->field('is_pay,agent_cash,is_fenh')->find($id);
+        $m = $rs['agent_cash'];
+        if ($rs['is_pay'] == 0) {
+            $this->error('临时会员不能加单！');
+            exit;
+        }
+        if ($rs['is_fenh'] != 0) {
+            $this->error('新增或空单用户不能加单！');
+            exit;
+        }
+        if (strlen($_POST['UserID']) < 1) {
+            $this->error('会员编号不能少！');
+            exit;
+        }
+
+//			if (strlen($_POST['UserID'])<6){
+//				$this->error('会员编号不能少于六位！');
+//				exit;
+//			}
+//$ttt='AAA333';
+//if(preg_match("/^[A-Z0-9]+$/", $ttt)){
+//echo '正确';
+//}else{
+//echo '错误';
+//}
+
+        $data = array();  //创建数据对象
+        //检测报单中心
+        $shopid = trim($_POST['shopid']);  //所属报单中心帐号
+        if (empty($shopid)) {
+            $this->error('请输入报单中心编号！');
+            exit;
+        }
+        $smap = array();
+        $smap['user_id'] = $shopid;
+        $smap['is_agent'] = array('gt', 1);
+        $shop_rs = $fck->where($smap)->field('id,user_id')->find();
+        if (!$shop_rs) {
+            $this->error('没有该报单中心！');
+            exit;
+        } else {
+            $data['shop_id'] = $shop_rs['id'];      //隶属会员中心编号
+            $data['shop_name'] = $shop_rs['user_id']; //隶属会员中心帐号
+        }
+        unset($smap, $shop_rs, $shopid);
+
+        //检测推荐人
+        $RID = trim($_POST['RID']);  //获取推荐会员帐号
+        $mapp = array();
+        $mapp['user_id'] = $RID;
+        $mapp['is_pay'] = array('gt', 0);
+        $authInfoo = $fck->where($mapp)->field('id,user_id,re_level,re_path,agent_cash,agent_use')->find();
+        if ($authInfoo) {
+            $data['re_path'] = $authInfoo['re_path'] . $authInfoo['id'] . ',';  //推荐路径
+            $data['re_id'] = $authInfoo['id'];                              //推荐人ID
+            $data['re_name'] = $authInfoo['user_id'];                       //推荐人帐号
+            $data['re_level'] = $authInfoo['re_level'] + 1;                 //代数(绝对层数)
+        } else {
+            $this->error('推荐人不存在！');
+            exit;
+        }
+        
+
+        //检测上节点人
+        $FID = trim($_POST['FID']);  //上节点帐号
+        $mappp = array();
+        $mappp['user_id'] = $FID;
+//			$mappp['is_pay']  = array('gt',0);
+//        $authInfoo = $fck->where($mappp)->field('id,p_path,p_level,user_id,is_pay')->find();
+//        if ($authInfoo) {
+//            $fatherispay = $authInfoo['is_pay'];
+//            $data['p_path'] = $authInfoo['p_path'] . $authInfoo['id'] . ',';  //绝对路径
+//            $data['father_id'] = $authInfoo['id'];                        //上节点ID
+//            $data['father_name'] = $authInfoo['user_id'];                 //上节点帐号
+//            $data['p_level'] = $authInfoo['p_level'] + 1;                 //上节点ID
+//        } else {
+//            $this->error('上级会员不存在！');
+//            exit;
+//        }
+//        unset($authInfoo, $mappp);
+//        $TPL = $_POST['TPL'];
+//        $where = array();
+//        $where['father_id'] = $data['father_id'];
+//        $where['treeplace'] = $TPL;
+//        $rs = $fck->where($where)->field('id')->find();
+//        if ($rs) {
+//            $this->error('该位置已经注册！');
+//            exit;
+//        } else {
+//            $data['treeplace'] = $TPL;
+//        }
+//
+//
+//        if ($fatherispay == 0 && (int) $TPL > 0) {
+//            $this->error('接点人开通后才能在此位置注册！');
+//            exit;
+//        }
+//			$fann = $fck->where('father_id='.$data['father_id'].' and is_pay>0')->count();
+//			if($fann==0&&$TPL>0){
+//				$this->error('上级左区开通后才能注册右区！');
+//				exit;
+//			}
+//			$renn = $fck->where('re_id='.$data['re_id'].' and is_pay>0')->count();
+//			if($renn<1){
+//				$tjnn = $renn+1;
+//				if($renn==0){
+//					$oktp = 0;
+//					$errtp = "A部门";
+//				}
+//				$zz_id = $this->pd_left_us($data['re_id'],$oktp);
+//				$zz_rs = $fck->where('id='.$zz_id)->field('id,user_id')->find();
+//				if($zz_id!=$data['father_id']){
+//					$this->error('推荐第'.$tjnn.'人必须放在'.$zz_rs['user_id'].'的'.$errtp.'！');
+//					exit;
+//				}
+//				if($TPL!=$oktp){
+//					$this->error('推荐第'.$tjnn.'人必须放在'.$zz_rs['user_id'].'的'.$errtp.'！');
+//					exit;
+//				}
+//			}
+//			unset($rs,$where,$TPL);
+
+        $fwhere = array(); //检测帐号是否存在
+        $fwhere['user_id'] = trim($_POST['UserID']);
+        $frs = $fck->where($fwhere)->field('id')->find();
+        if ($frs) {
+            $this->error('该会员编号已存在！');
+            exit;
+        }
+        $kk = stripos($fwhere['user_id'], '-');
+        if ($kk) {
+            $this->error('会员编号中不能有扛(-)符号！');
+            exit;
+        }
+        unset($fwhere, $frs);
+        
+        $fee=M('fee');
+        $fee_rs=$fee->field('s9')->find(1);
+        if($fee_rs['s9']>$authInfoo['agent_cash']){
+            $this->error("您的报单币不足!");
+            exit;
+        }
+            
+            unset($authInfoo, $mapp);
+        $errmsg = "";
+        if (empty($_POST['wenti_dan'])) {
+            $errmsg.="<li>密保答案不能为空！</li>";
+//				$this->error('');
+//				exit;
+        }
+        if (empty($_POST['BankCard'])) {
+            $errmsg.="<li>银行卡号不能为空！</li>";
+//				$this->error('');
+//				exit;
+        }
+        $huhu = trim($_POST['UserName']);
+        if (empty($huhu)) {
+            $errmsg.="<li>请填写开户姓名！</li>";
+//				$this->error('请填写开户姓名！');
+//				exit;
+        }
+
+//			$cardd=trim($_POST['BankCard']);
+//			if(strlen($cardd)!=19){
+//				$this->error('请填写正确的19位银行卡号！');
+//				exit;
+//			}
+//			if(empty($_POST['BankProvince'])||$_POST['BankProvince']=='请选择'){
+//				$this->error('请选择开户省份！');
+//				exit;
+//			}
+//			if(empty($_POST['BankCity'])||$_POST['BankCity']=='请选择'){
+//				$this->error('请选择开户城市！');
+//				exit;
+//			}
+//			$ZZZ=trim($_POST['BankAddress']);
+//			if(empty($ZZZ)){
+//				$errmsg.="<li>请填写详细开户地址！</li>";
+////				$this->error('请填写支行地址！');
+////				exit;
+//			}
+        if (empty($_POST['UserCode'])) {
+            $errmsg.="<li>请填写身份证号码！</li>";
+//				$this->error('请填写身份证号码！');
+//				exit;
+        }
+//			if(strlen($_POST['UserCode']) != 18){
+//				$this->error('身份证号码必须为18位！');
+//				exit;
+//			}
+        if (empty($_POST['UserTel'])) {
+            $errmsg.="<li>请填写电话号码！</li>";
+//				$this->error('请填写电话号码！');
+//				exit;
+        }
+//			if(strlen($_POST['UserTel']) != 11){
+//				$this->error('11位电话号码输入不正确！');
+//				exit;
+//			}
+        if (empty($_POST['UserEmail'])) {
+            $errmsg.="<li>请填写您的邮箱地址，找回密码时需使用！</li>";
+//				$this->error('请填写您的邮箱地址，找回密码时需使用！');
+//				exit;
+        }
+
+        $usercc = trim($_POST['UserCode']);
+//			$fwhere = array();
+//			$fwhere['user_code'] = $usercc;
+//			$frs = $fck->where($fwhere)->field('id')->find();
+//			if ($frs){
+//				$this->error('该身份证号码已经被注册！');
+//				exit;
+//			}
+//			unset($frs,$fwhere);
+//				$fwhere = array();//检测昵称是否存在
+//				$fwhere['nickname'] = trim($_POST['NickName']);
+//				$frs = $fck->where($fwhere)->field('id')->find();
+//				if ($frs){
+//					$this->error('该会员名已存在！');
+//					exit;
+//				}
+//				$nickname = $fwhere['nickname'];
+//				unset($fwhere,$frs);
+//			if(strlen($_POST['Password']) < 6 or strlen($_POST['Password']) > 16 or strlen($_POST['PassOpen']) < 6 or strlen($_POST['PassOpen']) > 16){
+//				$this->error('密码应该是6-16位！');
+//				exit;
+//			}
+        if (strlen($_POST['Password']) < 1 or strlen($_POST['Password']) > 16 or strlen($_POST['PassOpen']) < 1 or strlen($_POST['PassOpen']) > 16) {
+            $this->error('密码应该是1-16位！');
+            exit;
+        }
+        if ($_POST['Password'] != $_POST['rePassword']) {  //一级密码
+            $this->error('一级密码两次输入不一致！');
+            exit;
+        }
+        if ($_POST['PassOpen'] != $_POST['rePassOpen']) {  //二级密码
+            $this->error('二级密码两次输入不一致！');
+            exit;
+        }
+        if ($_POST['Password'] == $_POST['PassOpen']) {  //二级密码
+            $this->error('一级密码与二级密码不能相同！');
+            exit;
+        }
+//				if($_POST['Password3'] != $_POST['rePassword3']){  //三级密码
+//					$this->error('三级密码两次输入不一致！');
+//					exit;
+//				}
+
+        $us_name = $_POST['us_name'];
+        $us_address = $_POST['us_address'];
+        $us_tel = $_POST['us_tel'];
+        if (empty($us_name)) {
+            $errmsg.="<li>请输入收货人姓名！</li>";
+        }
+        if (empty($us_address)) {
+            $errmsg.="<li>请输入收货地址！</li>";
+        }
+        if (empty($us_tel)) {
+            $errmsg.="<li>请输入收货人电话！</li>";
+        }
+
+        $s_err = "<ul>";
+        $e_err = "</ul>";
+        if (!empty($errmsg)) {
+            $out_err = $s_err . $errmsg . $e_err;
+            $this->error($out_err);
+            exit;
+        }
+
+
+        $uLevel = $_POST['u_level'];
+        $fee = M('fee')->find();
+        $s = $fee['s9'];
+        $s2 = explode('|', $fee['s2']);
+        $s9 = explode('|', $fee['s9']);
+
+        $product = M('product');
+        $gouwu = M('gouwu');
+        $ydate = mktime();
+        $cpid = $_POST['uid']; //所以产品的ID
+        if (empty($cpid)) {
+            $this->error('请选择产品！');
+            exit;
+        }
+
+        $pro_where = array();
+        $pro_where['id'] = array('in', $cpid);
+        $pro_rs = $product->where($pro_where)->select();
+        $cpmoney = 0; //产品总价
+        $txt = "";
+        foreach ($pro_rs as $pvo) {
+            $aa = "shu" . $pvo['id'];
+            $cc = $_POST[$aa];
+            if ($cc != 0) {
+                $cpmoney = $cpmoney + $pvo['money'] * $cc;
+                $txt .= $pvo['id'] . ',';
+            }
+        }
+        unset($pro_rs);
+
+        $F4 = $s2[$uLevel]; //认购单数
+        $ul = $s9[$uLevel];
+
+//			if($cpmoney!=$ul){
+//				$this->error('产品金额和级别对不上，请重新选择！');
+//				exit;
+//			}
+//			$lvp	= $s4[$uLevel]/100;
+//			if($m <$ul){
+//				$this->error('电子币不足！');
+//				exit;
+//			}
+        //检测注册等级
+        //$history->execute("INSERT INTO __TABLE__ (uid,action_type,pdt,epoints,bz,zong,qubie) VALUES ($cid,100,$ydate,'-$p2','购物',$Zong,3) ");
+        $Money = explode('|', C('Member_Money'));  //注册金额数组
+
+        $new_userid = $_POST['UserID'];
+
+        $data['user_id'] = $new_userid;
+        $data['bind_account'] = '3333';
+        $data['last_login_ip'] = '';                            //最后登录IP
+        $data['verify'] = '0';
+        $data['status'] = 1;                             //状态(?)
+        $data['type_id'] = '0';
+        $data['last_login_time'] = time();                        //最后登录时间
+        $data['login_count'] = 0;                             //登录次数
+        $data['info'] = '信息';
+        $data['name'] = '名称';
+        $data['password'] = md5(trim($_POST['Password']));  //一级密码加密
+        $data['passopen'] = md5(trim($_POST['PassOpen']));  //二级密码加密
+        $data['pwd1'] = trim($_POST['Password']);       //一级密码不加密
+        $data['pwd2'] = trim($_POST['PassOpen']);       //二级密码不加密
+
+        $data['wenti'] = trim($_POST['wenti']);  //密保问题
+        $data['wenti_dan'] = trim($_POST['wenti_dan']);  //密保答案
+
+        $data['bank_name'] = $_POST['BankName'];             //银行名称
+        $data['bank_card'] = $_POST['BankCard'];             //帐户卡号
+        $data['user_name'] = $_POST['UserName'];             //姓名
+        $data['nickname'] = $_POST['UserID']; //$_POST['nickname'];  //昵称
+        $data['bank_province'] = $_POST['BankProvince'];  //省份
+        $data['bank_city'] = $_POST['BankCity'];      //城市
+        $data['bank_address'] = $_POST['BankAddress'];          //开户地址
+        //$data['user_post']           = $_POST['UserPost']; 		   //
+        $data['user_code'] = $_POST['UserCode'];             //身份证号码
+        $data['user_address'] = $_POST['UserAddress'];          //联系地址
+        $data['email'] = $_POST['UserEmail'];            //电子邮箱
+        $data['qq'] = $_POST['qq'];                //qq
+        $data['user_tel'] = $_POST['UserTel'];              //联系电话
+        $data['is_pay'] = 0;                              //是否开通
+        $data['rdt'] = time();                         //注册时间
+//			$data['pdt']                 = strtotime(date('Y-m-d'));
+        $data['u_level'] = $uLevel + 1;                      //注册等级
+        $data['cpzj'] = $ul;                          //注册金额
+        $data['f4'] = $F4;       //单量
+        $data['wlf'] = 0;                              //网络费
+//			$data['wang_j']				= 1;						//网络图
+//			$data['wang_t']				= 1;						//推荐图
+        //$fck->create($data);
+//			dump($data);exit;
+        $result = $fck->add($data);
+
+        unset($data, $fck);
+        if ($result) {
+            $where1['id'] = array('in', $txt . '0');
+            $rs1 = $product->where($where1)->select();
+            $i = 0;
+            $p = array();
+            foreach ($rs1 as $b) {
+                $id = $b['id'];
+                $cpid = $b['id'];
+                $aa1 = "shu" . $b['id'];
+                $cc1 = $_POST[$aa1];
+                if ($cc1 != 0) {
+                    $hy1 = $b['money'];
+
+                    $p[$i] = $hy1 * $cc1;
+                    $p1 = $hy1 * $cc1;
+                    $i++;
+
+                    $gwd = array();
+                    $gwd['uid'] = $result;
+                    $gwd['user_id'] = $new_userid;
+                    $gwd['did'] = $cpid;
+                    $gwd['lx'] = 0;
+                    $gwd['ispay'] = 0;
+                    $gwd['pdt'] = mktime();
+                    $gwd['money'] = $hy1;
+                    $gwd['shu'] = $cc1;
+                    $gwd['cprice'] = $p1;
+                    $gwd['us_name'] = $us_name;
+                    $gwd['us_address'] = $us_address;
+                    $gwd['us_tel'] = $us_tel;
+                    $gouwu->add($gwd);
+                }
+            }
+            unset($product, $gouwu, $rs1);
+            $_SESSION['new_user_reg_id'] = $result;
+            $_SESSION['Urlszpass'] = 'MyssShuiPuTao2';
+            $this->_menberOpenJiadan($result);
+
+//				$bUrl = __URL__.'/users/FID/'.$FID.'/RID='.$RID;
+//				$this->_box(1,'会员注册成功！',$bUrl,1);
+        } else {
+            $this->error('会员加单失败！');
+            exit;
+        }
+//		}else{
+//			$this->error('会员注册失败！');
+//			exit;
+//		}
+    }
 
     public function users_ok() {
         $gourl = __APP__ . "/Fck/users";
@@ -1844,6 +2267,127 @@ class FckAction extends CommonAction {
 
         unset($fck, $TPL, $where, $field, $rs, $data_temp, $temp_rs, $rs);
         $this->display('users');
+//		}else{
+//			$this->error('数据错误!');
+//			exit;
+//		}
+    }
+    
+    public function jiadan($Urlsz = 0) {
+        //==========================================================会员注册
+//		if ($_SESSION['Urlszpass'] == 'MyssBoLuo' ){
+        $fck = M('fck');
+        $fee = M('fee');
+        $RID = (int) $_GET['RID'];
+        $FID = (int) $_GET['FID'];
+        $TP = (int) $_GET['TPL'];
+        if (empty($TPL))
+            $TPL = 0;
+        $TPL = array();
+        for ($i = 0; $i < 5; $i++) {
+            $TPL[$i] = '';
+        }
+        $TPL[$TP] = 'selected="selected"';
+
+        //===报单中心
+        $zzc = array();
+        $where = array();
+        $where['id'] = $_SESSION[C('USER_AUTH_KEY')];
+        $field = 'user_id,is_agent,agent_cash,shop_id,shop_name';
+        $rs = $fck->where($where)->field($field)->find();
+        $money = $rs['agent_cash'];
+        $mmuserid = $rs['user_id'];
+        if ($rs['is_agent'] >= 2) {
+            $zzc[1] = $rs['user_id'];
+        } else {
+            $zzc[1] = $rs['shop_name'];
+        }
+        $this->assign('myid', $_SESSION[C('USER_AUTH_KEY')]);
+
+        //===推荐人
+        $where['id'] = $RID;
+        $field = 'user_id,is_agent';
+        $rs = $fck->where($where)->field($field)->find();
+        if ($rs) {
+            $zzc[2] = $rs['user_id'];
+        } else {
+            $zzc[2] = $mmuserid;
+        }
+        $zzc[2] = $mmuserid;
+        //===接点人
+        $where['id'] = $FID;
+        $field = 'user_id,is_agent';
+        $rs = $fck->where($where)->field($field)->find();
+        if ($rs) {
+            $zzc[3] = $rs['user_id'];
+        } else {
+            $zzc[3] = '';
+        }
+
+        //生成编号
+//			$data_temp = array();
+//			//$fck_rs = $fck -> field('user_id') -> find();
+//			for($gooduser = 0;$gooduser == 0;){
+//				//$data_temp['user_id'] =  date('ymd',strtotime(date('c'))) . mt_rand(1000,9999);
+//				$data_temp['user_id'] =  mt_rand(100000,999999);
+//				$temp_rs = $fck -> where($data_temp) -> find();
+//				if(!$temp_rs){
+//					$gooduser = 1;
+//				}
+//			}
+//			$this->assign('user_id',$data_temp['user_id']);
+        $arr = array();
+        for ($i = 1; $i <= 10; $i++) {
+            $arr[$i]['UserID'] = $this->_getUserID($arr, $i);
+        }
+        $this->assign('flist', $arr);
+
+        $pwhere = array();
+        $product = M('product');
+        $prs = $product->where($pwhere)->select();
+        $this->assign('plist', $prs);
+
+
+
+        $fee_s = $fee->field('s2,s9,i4,str29,str99')->find();
+        $s9 = $fee_s['s9'];
+        $s9 = explode('|', $s9);
+
+        $i4 = $fee_s['i4'];
+        if ($i4 == 0) {
+            $openm = 1;
+        } else {
+            $openm = 0;
+        }
+//			dump($i4);exit;
+        //输出银行
+        $bank = explode('|', $fee_s['str29']);
+        //输出级别名称
+        $Level = explode('|', C('Member_Level'));
+        //输出注册单数
+        $Single = explode('|', C('Member_Single'));
+        //输出一单的金额
+//			$Money = explode('|',C('Member_Money'));
+
+        $wentilist = explode('|', $fee_s['str99']);
+
+        $this->assign('s9', $s9);
+        $this->assign('openm', $openm);
+        $this->assign('bank', $bank);
+        $this->assign('Level', $Level);
+        $this->assign('Single', $Single);
+        $this->assign('Money', $fee_s['s2']);
+        $this->assign('Money1', $money);
+        $this->assign('wentilist', $wentilist);
+
+        unset($bank, $Level, $$Level);
+
+
+        $this->assign('TPL', $TPL);
+        $this->assign('zzc', $zzc);
+
+        unset($fck, $TPL, $where, $field, $rs, $data_temp, $temp_rs, $rs);
+        $this->display('jiadan');
 //		}else{
 //			$this->error('数据错误!');
 //			exit;
@@ -2520,7 +3064,7 @@ class FckAction extends CommonAction {
                 if ($reg_money == 0) {
                     if ($rs['agent_cash'] < $money_a) {
                         $bUrl = __URL__ . '/menber';
-                        $this->_box(0, '电子币余额不足！', $bUrl, 1);
+                        $this->_box(0, '报单币余额不足！', $bUrl, 1);
                         exit;
                     }
 
@@ -2563,6 +3107,109 @@ class FckAction extends CommonAction {
                 unset($vo);
                 $bUrl = __URL__ . '/menber';
                 $this->_box(0, '开通会员失败！', $bUrl, 1);
+                exit;
+            }
+        } else {
+            $this->error('错误！');
+            exit;
+        }
+    }
+    private function _menberOpenJiadan($OpID = 0) {
+        //=============================================开通会员
+        if ($_SESSION['Urlszpass'] == 'MyssShuiPuTao2') {
+            $fck = D('Fck');
+            $fee = M('fee');
+            $gouwu = M('gouwu');
+            if (!$fck->autoCheckToken($_POST)) {
+                $this->error('页面过期，请刷新页面！');
+                exit;
+            }
+
+            //被开通会员参数
+            $where = array();
+            $where['id'] = $OpID;  //
+            $where['is_pay'] = 0;  //未开通的
+            $field = '*';
+            $vo = $fck->where($where)->field($field)->select();
+            $fee_rs = $fee->find();
+            $ssl = $fee_rs['s6'] / 100;
+
+            //报单中心参数
+            $where_two = array();
+            $field_two = '*';
+            $ID = $_SESSION[C('USER_AUTH_KEY')];
+            $where_two['id'] = $ID;
+//			$where_two['is_agent'] = array('gt',1);
+            $nowdate = strtotime(date('c'));
+            $nowday = strtotime(date('Y-m-d'));
+            $fck->emptyTime();
+            foreach ($vo as $voo) {  //找出所有待开通会员记录
+                $rs = $fck->where($where_two)->field($field_two)->find();  //找出登录会员(必须为报单中心并且已经登录)
+                if (!$rs) {
+                    $this->error('会员错误！');
+                    exit;
+                }
+
+                $ppath = $voo['p_path'];
+                //上级未开通不能开通下级员工
+                $frs_where['is_pay'] = array('eq', 0);
+                $frs_where['id'] = $voo['father_id'];
+                $frs = $fck->where($frs_where)->find();
+                if ($frs) {
+                    $this->error('加单失败，上级未开通');
+                    exit;
+                }
+
+                $money_a = $voo['cpzj']; //百分之
+//				$money_b = $voo['cpzj']-$money_a;	//百分之30
+                $money_b = 0;
+
+                if ($reg_money == 0) {
+                    if ($rs['agent_cash'] < $money_a) {
+                        $bUrl = __URL__ . '/menber';
+                        $this->_box(0, '报单币余额不足！', $bUrl, 1);
+                        exit;
+                    }
+
+//					if ($rs['agent_kt'] < $money_b){
+//						$bUrl = __URL__.'/menber';
+//						$this->_box(0,'开通币余额不足！',$bUrl,1);
+//						exit;
+//					}
+                }
+
+                $shop_id = $voo['shop_id'];
+
+                $fck->query("update __TABLE__ set `re_nums`=re_nums+1,re_f4=re_f4+" . $voo['f4'] . " where `id`=" . $voo['re_id']);
+
+                //生成发货单
+                M('gouwu')->query("update __TABLE__ set lx=1 where uid=" . $voo['id']);
+
+                $fck->query("update __TABLE__ set open=0,get_date=" . $nowday . " where `id`=" . $voo['id']);
+
+                //统计单数
+                $fck->xiangJiao($voo['id'], $voo['f4']);
+
+                $money = $voo['cpzj'];  //找出该会员的注册金额
+                $fck->query("update __TABLE__ set `agent_cash`=agent_cash-" . $money_a . ",`agent_kt`=agent_kt-" . $money_b . " where `id`=" . $ID);
+                $fck->addencAdd($rs['id'], $voo['user_id'], -$money, 19); //历史记录
+                //算出奖金
+                $fck->getusjj($voo['id'], 1);
+
+                //全部奖金结算
+                $this->_clearing();
+            }
+//			$this->_clearing();
+            unset($fck, $where, $where_two, $rs);
+            if ($vo) {
+                unset($vo);
+                $bUrl = __URL__ . '/menber';
+                $this->_box(1, '加单成功！', $bUrl, 2);
+                exit;
+            } else {
+                unset($vo);
+                $bUrl = __URL__ . '/menber';
+                $this->_box(0, '加单失败！', $bUrl, 1);
                 exit;
             }
         } else {

@@ -1,8 +1,8 @@
-﻿<!DOCTYPE HTML>
+<?php if (!defined('THINK_PATH')) exit();?>﻿<!DOCTYPE HTML>
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
-<title>{$System_namex}</title>
+<title><?php echo ($System_namex); ?></title>
 <link href="__PUBLIC__/other/Css/body.css" rel="stylesheet" media="screen" type="text/css" />
 <link href="__PUBLIC__/other/Css/menu.css" rel="stylesheet" media="screen" type="text/css" />
 <link href="__PUBLIC__/other/Css/main.css" rel="stylesheet" media="all" type="text/css" />
@@ -61,7 +61,7 @@ function setPrice(data1,data2,data3){
 <div class="top_title" style="color:#000">
     <div id="nihao"></div>  
 </div>
-	<div class="top_user">欢迎您：{$fck_rs['user_id']}<br>
+	<div class="top_user">欢迎您：<?php echo ($fck_rs['user_id']); ?><br>
     </div>
     <div id="menu_all">
                         <ul id="jsddm">
@@ -95,10 +95,8 @@ function setPrice(data1,data2,data3){
                                     <li><a href="__APP__/Fck/users" target="main">注册会员</a></li>
                                     <li><a href="__APP__/Fck/jiadan" target="main">加单功能</a></li>
                                     <!--<li><a href="__APP__/Tree/cody/c_id/5" target="main">系统架构图</a></li>-->
-                                    <egt name="fck_rs['is_boss']" value='1'>
-                                    <li><a href="__APP__/Tree/cody/c_id/6" target="main">推荐关系图</a></li>
-                                    <li><a href="__APP__/Fck/cody/c_id/3" target="main">查看推荐关系</a></li>
-                                    </egt>
+                                    <?php if(($fck_rs['is_boss']) >= "1"): ?><li><a href="__APP__/Tree/cody/c_id/6" target="main">推荐关系图</a></li>
+                                    <li><a href="__APP__/Fck/cody/c_id/3" target="main">查看推荐关系</a></li><?php endif; ?>
                                     <!--<li><a href="__APP__/Tree/cody/c_id/8" target="main">公排网络图</a></li>-->
                                     <li><a href="__APP__/Fck/cody/c_id/4" target="main">申请报单中心</a></li>
                                     <li><a href="__APP__/Fck/cody/c_id/1" target="main">未开通会员</a></li>
@@ -122,12 +120,10 @@ function setPrice(data1,data2,data3){
                                     <li><a href="__APP__/Gupiao/cody/c_id/1" target="main">电子股买入</a></li>
                                     <li><a href="__APP__/Gupiao/cody/c_id/3" target="main">电子股卖出</a></li>
                                     <li><a href="__APP__/Gupiao/cody/c_id/4" target="main">电子股行情</a></li>
-                                    <egt name="fck_rs['is_boss']" value='1'>
-                                        <li><a href="__APP__/Gupiao/cody/c_id/3" target="main">公司卖出电子股</a></li>
+                                    <?php if(($fck_rs['is_boss']) >= "1"): ?><li><a href="__APP__/Gupiao/cody/c_id/3" target="main">公司卖出电子股</a></li>
                                         <li><a href="__APP__/Gupiao/cody/c_id/5" target="main">电子股参数设置</a></li>
                                         <li><a href="__APP__/Gupiao/cody/c_id/7" target="main">购买列表</a></li>
-                                        <li><a href="__APP__/Gupiao/cody/c_id/8" target="main">出售列表</a></li>
-                                    </egt>
+                                        <li><a href="__APP__/Gupiao/cody/c_id/8" target="main">出售列表</a></li><?php endif; ?>
                                 </ul>
                             </li>
 
@@ -152,8 +148,7 @@ function setPrice(data1,data2,data3){
                                 </ul>
                             </li>
 
-                            <egt name="fck_rs['is_boss']" value='1'>
-                                <li><a href="#">后台管理</a>
+                            <?php if(($fck_rs['is_boss']) >= "1"): ?><li><a href="#">后台管理</a>
                                     <ul>
                                          <li><a target="main" onclick="if(confirm('确定分红吗?')) this.href='__APP__/Test/xxx';else return false;">日分红模拟</a></li>
                                         <li><a href="__APP__/YouZi/cody/c_id/5" target="main">当期出纳</a></li>
@@ -173,8 +168,7 @@ function setPrice(data1,data2,data3){
                                         <li><a href="__APP__/YouZi/cody/c_id/3" target="main">参数设置</a></li>
                                         <li><a href="__APP__/YouZi/cody/c_id/9" target="main">清空数据</a></li>
                                     </ul>
-                                </li>
-                            </egt>
+                                </li><?php endif; ?>
                             <li>
                                 <a href="__APP__/Public/LogOut" onClick="{
                             if (confirm('确定安全退出吗?')) {
@@ -199,7 +193,7 @@ function setPrice(data1,data2,data3){
 </div>
 </div>
 </div>
-<div class="footer">Copyright © 2013-2023 {$System_namex} ,All Right Reserved.</div>
+<div class="footer">Copyright © 2013-2023 <?php echo ($System_namex); ?> ,All Right Reserved.</div>
 </body>
 </html>
 <script language="javascript">
